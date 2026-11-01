@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Perder peso · despensa</title>
   <meta name="description" content="Perder peso con cambios pequeños que se mantienen: el plato, el hambre de verdad, la compra y los mitos.">
+  <meta name="theme-color" content="#f5f6f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161c18" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://serbenda.github.io/despensa/peso.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="despensa">
+  <meta property="og:title" content="Perder peso sin pasar hambre · despensa">
+  <meta property="og:description" content="Cambios pequeños que se mantienen: el plato, el hambre de verdad, la compra y los mitos.">
+  <meta property="og:url" content="https://serbenda.github.io/despensa/peso.html">
+  <meta property="og:image" content="https://serbenda.github.io/despensa/img/social.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,6 +74,9 @@
               <p>Un plato de 24 cm en lugar de uno de 28 se ve igual de lleno con menos cantidad. Suena a truco, pero funciona.</p>
             </div>
           </div>
+          <p>Por qué funciona: con la misma energía, unos alimentos llenan el plato y otros caben en una mano. No hace falta contar nada; basta con saber cuáles son cuáles.</p>
+          <div id="g-densidad"></div>
+          <p class="dato-clave">En España solo <b>1 de cada 10</b> personas mayores de 15 años come cinco raciones de fruta y verdura al día. Es el cambio con más recorrido. <a href="datos.html#adultos">Ver los datos</a></p>
         </section>
 
         <section id="hambre">
@@ -146,6 +162,29 @@
   </main>
 
   <script src="js/comun.js"></script>
+  <script src="js/graficos.js"></script>
+  <script>
+    Grafico.barras(document.getElementById("g-densidad"), {
+      titulo: "Cuánta comida son 100 kilocalorías",
+      subtitulo: "Gramos de cada alimento que aportan 100 kcal. Cuanto más larga la barra, más llena con la misma energía; en rojo, los más concentrados.",
+      unidad: " g", decimales: 0,
+      columna: "Alimento", columnaValor: "Gramos por 100 kcal",
+      color: "var(--hortaliza)", colorDestacado: "var(--proteina)",
+      datos: [
+        { etiqueta: "Fresas", valor: 300, nota: "un bol grande" },
+        { etiqueta: "Brócoli cocido", valor: 285, nota: "dos platos" },
+        { etiqueta: "Naranja", valor: 215, nota: "dos naranjas medianas" },
+        { etiqueta: "Manzana", valor: 190, nota: "una grande" },
+        { etiqueta: "Patata cocida", valor: 115, nota: "una mediana" },
+        { etiqueta: "Lentejas cocidas", valor: 85, nota: "medio plato" },
+        { etiqueta: "Pan blanco", valor: 38, nota: "una rebanada y media", destacar: true },
+        { etiqueta: "Galletas", valor: 21, nota: "unas cuatro", destacar: true },
+        { etiqueta: "Patatas fritas de bolsa", valor: 19, nota: "un puñado", destacar: true },
+        { etiqueta: "Aceite de oliva", valor: 11, nota: "una cucharada: sano, pero muy concentrado", destacar: true },
+      ],
+      fuente: 'valores aproximados a partir de la <a href="https://www.bedca.net/">Base de Datos Española de Composición de Alimentos (BEDCA)</a>',
+    });
+  </script>
   <script>
     (function () {
       const textos = {

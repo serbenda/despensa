@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Entrenar · despensa</title>
   <meta name="description" content="Qué comer antes, durante y después de entrenar, cuánta proteína tiene sentido, hidratación y suplementos.">
+  <meta name="theme-color" content="#f5f6f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161c18" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://serbenda.github.io/despensa/entrenar.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="despensa">
+  <meta property="og:title" content="Comer para rendir · despensa">
+  <meta property="og:description" content="Antes, durante y después de entrenar, proteína por ración, hidratación y suplementos.">
+  <meta property="og:url" content="https://serbenda.github.io/despensa/entrenar.html">
+  <meta property="og:image" content="https://serbenda.github.io/despensa/img/social.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,7 +84,10 @@
             </p>
           </div>
 
-          <p>La mayoría de la gente que come proteína en cada comida ya está cerca sin hacer nada especial. Raciones que aportan unos 20 gramos:</p>
+          <div id="reparto" class="reparto" hidden></div>
+          <p>La mayoría de la gente que come proteína en cada comida ya está cerca sin hacer nada especial.</p>
+          <div id="g-proteina"></div>
+          <p>Raciones que aportan unos 20 gramos:</p>
           <ul>
             <li>Tres huevos</li>
             <li>Una lata de atún al natural de unos 80 gramos escurrida</li>
@@ -116,18 +132,54 @@
   </main>
 
   <script src="js/comun.js"></script>
+  <script src="js/graficos.js"></script>
+  <script>
+    Grafico.barras(document.getElementById("g-proteina"), {
+      titulo: "Proteína en una ración habitual",
+      subtitulo: "Gramos de proteína aproximados. La legumbre y el pescado no tienen nada que envidiar a la carne.",
+      unidad: " g", decimales: 0,
+      columna: "Ración", columnaValor: "Proteína",
+      color: "var(--proteina)",
+      datos: [
+        { etiqueta: "Pechuga de pollo, 100 g cocinada", valor: 30 },
+        { etiqueta: "Merluza, 150 g", valor: 24 },
+        { etiqueta: "Lentejas cocidas, plato de 250 g", valor: 22 },
+        { etiqueta: "Garbanzos cocidos, plato de 250 g", valor: 22 },
+        { etiqueta: "Atún al natural, lata de 80 g", valor: 20 },
+        { etiqueta: "Skyr, 150 g", valor: 16 },
+        { etiqueta: "Tofu firme, 125 g", valor: 15 },
+        { etiqueta: "Dos huevos", valor: 13 },
+        { etiqueta: "Queso fresco, 80 g", valor: 10 },
+        { etiqueta: "Vaso de leche, 250 ml", valor: 8 },
+        { etiqueta: "Almendras, un puñado de 30 g", valor: 6 },
+        { etiqueta: "Pan integral, 60 g", valor: 5 },
+      ],
+      fuente: 'valores aproximados a partir de la <a href="https://www.bedca.net/">BEDCA</a>; cambian según el producto y la marca.',
+    });
+  </script>
   <script>
     (function () {
       const entrada = document.getElementById("kilos");
       const salida = document.getElementById("rango");
+      const reparto = document.getElementById("reparto");
       entrada.addEventListener("input", () => {
         const kg = parseFloat(entrada.value.replace(",", "."));
         if (!kg || kg < 35 || kg > 200) {
           salida.textContent = "Escribe un peso entre 35 y 200 kilos.";
+          reparto.hidden = true;
           return;
         }
         const min = Math.round(kg * 1.2), max = Math.round(kg * 2);
         salida.textContent = `Entre ${min} y ${max} gramos de proteína al día, repartidos en 3 o 4 comidas.`;
+        const porComida = Math.round(((min + max) / 2) / 4);
+        reparto.hidden = false;
+        reparto.innerHTML = `<p>Repartido en cuatro tomas, unos <strong>${porComida} g en cada una</strong>. Por ejemplo:</p>
+          <ol>
+            <li><span>Desayuno</span> yogur tipo skyr con avena y frutos secos</li>
+            <li><span>Comida</span> plato de lentejas con huevo</li>
+            <li><span>Merienda</span> bocadillo de atún o vaso de leche con pan y queso</li>
+            <li><span>Cena</span> pescado o pollo con verdura y patata</li>
+          </ol>`;
       });
     })();
   </script>

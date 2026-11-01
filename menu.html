@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Menú y compra · despensa</title>
   <meta name="description" content="Genera un menú semanal equilibrado para toda la familia y la lista de la compra marcable.">
+  <meta name="theme-color" content="#f5f6f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161c18" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://serbenda.github.io/despensa/menu.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="despensa">
+  <meta property="og:title" content="Menú semanal y lista de la compra · despensa">
+  <meta property="og:description" content="Menú equilibrado para toda la familia según la AESAN, lista de la compra y fruta y verdura de temporada.">
+  <meta property="og:url" content="https://serbenda.github.io/despensa/menu.html">
+  <meta property="og:image" content="https://serbenda.github.io/despensa/img/social.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +29,7 @@
     <header class="cabecera-seccion">
       <div class="envoltorio">
         <h1>El menú de la semana, resuelto</h1>
-        <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN: legumbre al menos cuatro veces, pescado tres, huevo tres y carne no más de tres, sobre todo de ave. Si un plato no te convence, cámbialo.</p>
+        <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN: legumbre al menos cuatro veces, pescado tres o más, huevo hasta cuatro y carne como mucho tres, sobre todo de ave. Si un plato no te convence, cámbialo.</p>
       </div>
     </header>
 
@@ -30,8 +43,9 @@
       <section aria-labelledby="t-semana">
         <h2 id="t-semana" style="margin-top:0">Esta semana</h2>
         <div class="semana" id="semana"></div>
+        <h3>Cómo queda la semana</h3>
         <ul class="recuento" id="recuento" aria-label="Recuento de la semana"></ul>
-        <p style="margin-top:1rem;color:var(--tinta-suave)">Acompaña cada comida con pan integral si apetece, agua para beber y fruta o yogur natural de postre.</p>
+        <p style="margin-top:1rem;color:var(--tinta-suave)">Cada día, además: al menos tres raciones de verdura, dos o tres de fruta, agua para beber y aceite de oliva para cocinar. Frutos secos naturales, tres puñados o más a la semana. Recomendaciones de la <a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN</a>.</p>
       </section>
 
       <section aria-labelledby="t-compra">
@@ -40,11 +54,20 @@
         <p><button class="boton secundario" type="button" id="desmarcar">Desmarcar todo</button></p>
         <ul class="compra" id="compra"></ul>
       </section>
+
+      <section aria-labelledby="t-temporada" id="temporada">
+        <h2 id="t-temporada">De temporada</h2>
+        <p class="medida">La fruta y la verdura de temporada está más rica, es más barata y suele venir de más cerca. Elige un mes.</p>
+        <div class="meses" role="tablist" aria-label="Mes" id="meses"></div>
+        <div class="temporada" id="temporada-lista" role="tabpanel" aria-live="polite"></div>
+        <p class="grafico-fuente">Orientativo para la España peninsular; cada zona tiene sus tiempos.</p>
+      </section>
     </div>
   </main>
 
   <script src="js/comun.js"></script>
   <script src="js/platos.js"></script>
   <script src="js/menu.js"></script>
+  <script src="js/temporada.js"></script>
 </body>
 </html>
