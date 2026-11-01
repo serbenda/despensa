@@ -119,18 +119,30 @@
 
     const cuenta = {};
     estado.menu.forEach(i => { const g = PLATOS[i].g; cuenta[g] = (cuenta[g] || 0) + 1; });
+    const objetivos = {
+      legumbre: { min: 4, texto: "al menos 4" },
+      pescado: { min: 3, texto: "3 o más" },
+      huevo: { max: 4, texto: "hasta 4" },
+      carne: { max: 3, texto: "como mucho 3, mejor de ave" },
+      verdura: { texto: "platos de verdura como protagonista" },
+    };
     $("recuento").innerHTML = Object.keys(NOMBRE_GRUPO)
-      .filter(g => cuenta[g])
-      .map(g => `<li class="g-${g}">${NOMBRE_GRUPO[g]}: ${cuenta[g]} ${cuenta[g] === 1 ? "vez" : "veces"}</li>`)
-      .join("");
+      .filter(g => cuenta[g] || (g === "pescado" && !estado.vegetariano))
+      .map(g => {
+        const n = cuenta[g] || 0, o = objetivos[g];
+        const ok = (o.min === undefined || n >= o.min) && (o.max === undefined || n <= o.max);
+        let puntos = "";
+        for (let k = 0; k < n; k++) puntos += "<i></i>";
+        return `<li class="g-${g}"><span class="r-nombre">${NOMBRE_GRUPO[g]}</span><span class="r-puntos" aria-hidden="true">${puntos}</span><span class="r-n">${n} ${n === 1 ? "vez" : "veces"}</span><span class="r-meta">${ok ? "✓ " : ""}Recomendación: ${o.texto}</span></li>`;
+      }).join("");
 
     const marcados = new Set(estado.marcados);
     const porPasillo = listaCompra();
     $("compra").innerHTML = ORDEN_PASILLOS.filter(p => porPasillo[p]).map(pasillo =>
-      `<li class="grupo">${pasillo}</li>` +
+      `<li class="bloque"><p class="grupo">${pasillo}</p><ul>` +
       porPasillo[pasillo].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map(it =>
         `<li><label><input type="checkbox" data-clave="${it.clave}"${marcados.has(it.clave) ? " checked" : ""}><span>${it.nombre}</span></label></li>`
-      ).join("")
+      ).join("") + `</ul></li>`
     ).join("");
   }
 

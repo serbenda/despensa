@@ -5,6 +5,7 @@
     { id: "ninos", href: "ninos.html", texto: "Niños", clase: "s-ninos" },
     { id: "entrenar", href: "entrenar.html", texto: "Entrenar", clase: "s-entrenar" },
     { id: "menu", href: "menu.html", texto: "Menú y compra", clase: "s-menu" },
+    { id: "datos", href: "datos.html", texto: "Datos", clase: "s-datos" },
   ];
 
   const actual = document.body.dataset.pagina || "";
@@ -73,6 +74,9 @@
           <li><a href="https://www.who.int/es/news-room/fact-sheets/detail/physical-activity">OMS: actividad física</a></li>
           <li><a href="https://enfamilia.aeped.es/">AEP: En Familia</a></li>
           <li><a href="https://nutritionsource.hsph.harvard.edu/healthy-eating-plate/translations/spanish/">Harvard: el plato para comer saludable</a></li>
+          <li><a href="https://www.ine.es/dyngs/Prensa/es/ESdE2023.htm">INE: Encuesta de Salud de España 2023</a></li>
+          <li><a href="https://aesan.gob.es/nutricion/datos-sobrepeso-obesidad/aladino-2023">AESAN: estudio ALADINO 2023</a></li>
+          <li><a href="https://www.bedca.net/">BEDCA: composición de alimentos</a></li>
         </ul>
       </div>
     </div>`;

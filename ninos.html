@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Niños · despensa</title>
   <meta name="description" content="Alimentación infantil de 1 a 12 años: qué ofrecer por edades, desayunos, meriendas, la fiambrera del cole y el «no me gusta».">
+  <meta name="theme-color" content="#f5f6f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161c18" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://serbenda.github.io/despensa/ninos.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="despensa">
+  <meta property="og:title" content="Niños: que coman variado · despensa">
+  <meta property="og:description" content="Alimentación infantil de 1 a 12 años: por edades, desayunos, meriendas, la fiambrera y el azúcar en terrones.">
+  <meta property="og:url" content="https://serbenda.github.io/despensa/ninos.html">
+  <meta property="og:image" content="https://serbenda.github.io/despensa/img/social.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +62,7 @@
             </div>
           </div>
           <p>Con eso fuera, sobran el «una cucharada más», los premios con postre y los castigos. Forzar a comer suele conseguir justo lo contrario.</p>
+          <p class="dato-clave">En España, el <b>36 %</b> de los niños de 6 a 9 años tiene exceso de peso, y solo el <b>45 %</b> come fruta a diario. La buena noticia: en 2011 eran el 44,5 %. <a href="datos.html#ninos">Ver los datos</a></p>
           <div class="aviso">
             <p><strong>Un niño no se pone a dieta.</strong> Si te preocupa su peso, su crecimiento o lo poco que come, coméntalo con su pediatra. En casa, lo que funciona es mejorar la comida de toda la familia y moverse más, sin señalar al niño ni hablar de su cuerpo.</p>
           </div>
@@ -153,6 +167,7 @@
         <section id="azucar">
           <h2>Azúcar y bebidas</h2>
           <p>La OMS recomienda que los azúcares libres (los añadidos y los de zumos y mieles) se queden por debajo del 10 % de lo que se come al día, e idealmente por debajo del 5 %. En la práctica, eso deja poco margen: un refresco ya lo agota.</p>
+          <div id="g-terrones"></div>
           <ul>
             <li>Agua como bebida de diario, también en las comidas.</li>
             <li>El zumo, aunque sea natural, no es fruta: le falta la fibra. Mejor la pieza entera.</li>
@@ -171,6 +186,25 @@
   </main>
 
   <script src="js/comun.js"></script>
+  <script src="js/graficos.js"></script>
+  <script>
+    Grafico.terrones(document.getElementById("g-terrones"), {
+      titulo: "El azúcar, en terrones",
+      subtitulo: "Azúcar de una ración habitual. Cada terrón son 4 gramos.",
+      gramosPorTerron: 4,
+      datos: [
+        { etiqueta: "Refresco de cola", racion: "lata de 330 ml", gramos: 35 },
+        { etiqueta: "Batido de cacao", racion: "brik de 200 ml", gramos: 20 },
+        { etiqueta: "Zumo envasado", racion: "brik de 200 ml", gramos: 18 },
+        { etiqueta: "Yogur de sabor", racion: "125 g", gramos: 15 },
+        { etiqueta: "Crema de cacao", racion: "una cucharada, 20 g", gramos: 11 },
+        { etiqueta: "Cereales de chocolate", racion: "un bol de 30 g", gramos: 8 },
+        { etiqueta: "Kétchup", racion: "una cucharada, 15 g", gramos: 4 },
+      ],
+      limite: "Para un adulto, la OMS propone como ideal no pasar de unos 25 gramos de azúcar libre al día, seis terrones. Para un niño, menos. Una lata de refresco ya se pasa.",
+      fuente: 'valores típicos de etiqueta; cambian según la marca. En los lácteos incluyen el azúcar propio de la leche. Límite: <a href="https://www.who.int/es/news-room/fact-sheets/detail/healthy-diet">OMS</a>',
+    });
+  </script>
   <script>
     (function () {
       const pestanas = Array.from(document.querySelectorAll('[role="tab"]'));
