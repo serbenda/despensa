@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menú y compra · despensa</title>
+  <meta name="description" content="Genera un menú semanal equilibrado para toda la familia y la lista de la compra marcable.">
+  <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-pagina="menu" class="s-menu">
+  <main id="principal">
+    <header class="cabecera-seccion">
+      <div class="envoltorio">
+        <h1>El menú de la semana, resuelto</h1>
+        <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN: legumbre al menos cuatro veces, pescado tres, huevo tres y carne no más de tres, sobre todo de ave. Si un plato no te convence, cámbialo.</p>
+      </div>
+    </header>
+
+    <div class="envoltorio" style="padding-block:2rem 4rem">
+      <div class="controles">
+        <button class="boton" type="button" id="nuevo">Hacer otro menú</button>
+        <button class="boton secundario" type="button" id="imprimir">Imprimir</button>
+        <label><input type="checkbox" id="vegetariano"> Sin carne ni pescado</label>
+      </div>
+
+      <section aria-labelledby="t-semana">
+        <h2 id="t-semana" style="margin-top:0">Esta semana</h2>
+        <div class="semana" id="semana"></div>
+        <ul class="recuento" id="recuento" aria-label="Recuento de la semana"></ul>
+        <p style="margin-top:1rem;color:var(--tinta-suave)">Acompaña cada comida con pan integral si apetece, agua para beber y fruta o yogur natural de postre.</p>
+      </section>
+
+      <section aria-labelledby="t-compra">
+        <h2 id="t-compra">Lista de la compra</h2>
+        <p class="medida">Ordenada por zonas del súper. Marca lo que ya tienes en casa o ya está en el carro; se queda guardado en este navegador.</p>
+        <p><button class="boton secundario" type="button" id="desmarcar">Desmarcar todo</button></p>
+        <ul class="compra" id="compra"></ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/comun.js"></script>
+  <script src="js/platos.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

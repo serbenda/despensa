@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrenar · despensa</title>
+  <meta name="description" content="Qué comer antes, durante y después de entrenar, cuánta proteína tiene sentido, hidratación y suplementos.">
+  <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-pagina="entrenar" class="s-entrenar">
+  <main id="principal">
+    <header class="cabecera-seccion">
+      <div class="envoltorio">
+        <h1>Comer para rendir y recuperarte</h1>
+        <p class="entradilla">Para quien entrena varios días a la semana, en el gimnasio, corriendo o en un equipo. Sin batidos milagrosos: comida de verdad bien colocada a lo largo del día.</p>
+      </div>
+    </header>
+
+    <div class="envoltorio cuerpo">
+      <nav class="indice" aria-label="En esta página">
+        <p>En esta página</p>
+        <ol>
+          <li><a href="#basico">Lo básico</a></li>
+          <li><a href="#momentos">Antes, durante y después</a></li>
+          <li><a href="#proteina">Proteína</a></li>
+          <li><a href="#agua">Hidratación</a></li>
+          <li><a href="#suplementos">Suplementos</a></li>
+        </ol>
+      </nav>
+
+      <div class="contenido">
+        <section id="basico">
+          <h2>Lo básico</h2>
+          <p>El plato sigue siendo la base, con un ajuste: <strong>cuanto más entrenas, más crece el cuarto del cereal</strong>. Arroz, pasta, patata, pan o avena son el combustible del ejercicio intenso y no hay que tenerles miedo.</p>
+          <p>El error más común no es comer mal, sino comer poco. Entrenar mucho y comer de menos se nota en cansancio, lesiones, sueño peor y, en mujeres, en alteraciones de la regla. Si te pasa, consúltalo con tu médico.</p>
+          <div class="aviso">
+            <p><strong>Si estás perdiendo peso y entrenando</strong>, prioriza la proteína y el entrenamiento de fuerza: ayudan a que lo que pierdas sea grasa y no músculo. La sección de <a href="peso.html">perder peso</a> tiene el resto.</p>
+          </div>
+        </section>
+
+        <section id="momentos">
+          <h2>Antes, durante y después</h2>
+          <div class="tabla-scroll">
+            <table>
+              <thead><tr><th scope="col">Cuándo</th><th scope="col">Qué</th><th scope="col">Ejemplos</th></tr></thead>
+              <tbody>
+                <tr><td>2 o 3 horas antes</td><td>Una comida normal, con cereal, algo de proteína y poca grasa y fibra para que no siente pesado.</td><td>Arroz con pollo y verdura; pasta con atún y tomate.</td></tr>
+                <tr><td>30 a 60 minutos antes</td><td>Algo ligero y fácil de digerir, si tienes hambre.</td><td>Un plátano, una tostada con miel, un yogur.</td></tr>
+                <tr><td>Durante, menos de una hora</td><td>Agua. No hace falta nada más.</td><td>Agua, a sorbos.</td></tr>
+                <tr><td>Durante, más de una hora e intenso</td><td>Hidratos de absorción rápida y agua; en calor, también sales.</td><td>Plátano, dátiles, bebida isotónica, geles.</td></tr>
+                <tr><td>Después</td><td>La siguiente comida normal, con proteína e hidratos. No hay prisa de minutos.</td><td>Tortilla con pan y ensalada; yogur con avena y fruta.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Lo que comes en el día pesa mucho más que la hora exacta. La famosa «ventana anabólica» de 30 minutos es mucho más ancha de lo que se decía.</p>
+        </section>
+
+        <section id="proteina">
+          <h2>Proteína</h2>
+          <p>Para personas que entrenan con regularidad, las recomendaciones de las sociedades de nutrición deportiva están entre <strong>1,2 y 2 gramos por kilo de peso al día</strong>, repartidos en tres o cuatro comidas. La parte alta del rango, para fuerza intensa o cuando se está perdiendo peso.</p>
+
+          <div class="aviso">
+            <label for="kilos"><strong>Calcula tu rango orientativo.</strong> Tu peso en kilos:</label>
+            <p style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin:.6rem 0 0">
+              <input id="kilos" type="number" inputmode="decimal" min="35" max="200" step="1" placeholder="70" style="font:inherit;width:6rem;padding:.4rem .6rem;border-radius:8px;border:1px solid var(--linea);background:var(--papel);color:var(--tinta)">
+              <span id="rango" aria-live="polite">Escribe tu peso para ver el rango.</span>
+            </p>
+          </div>
+
+          <p>La mayoría de la gente que come proteína en cada comida ya está cerca sin hacer nada especial. Raciones que aportan unos 20 gramos:</p>
+          <ul>
+            <li>Tres huevos</li>
+            <li>Una lata de atún al natural de unos 80 gramos escurrida</li>
+            <li>Unos 70 gramos de pechuga de pollo o pavo cocinada</li>
+            <li>Un plato generoso de lentejas o garbanzos con un huevo o un poco de queso</li>
+            <li>Un yogur tipo skyr con un puñado de frutos secos</li>
+            <li>Unos 150 gramos de tofu firme</li>
+          </ul>
+        </section>
+
+        <section id="agua">
+          <h2>Hidratación</h2>
+          <p>Bebe a lo largo del día y llega al entrenamiento hidratado; un buen indicador es una orina de color claro. Durante el ejercicio, bebe según la sed a pequeños sorbos.</p>
+          <p>Para afinar en días de calor o sesiones largas: pésate antes y después. Cada kilo que pierdas es, sobre todo, agua; repón algo más de esa cantidad en las horas siguientes, junto con algo de sal en la comida.</p>
+        </section>
+
+        <section id="suplementos">
+          <h2>Suplementos</h2>
+          <p>La mayoría sobran. Los pocos con buena evidencia son útiles para casos concretos, no para todo el mundo.</p>
+          <div class="pares">
+            <div class="par">
+              <h3>Tienen respaldo</h3>
+              <ul>
+                <li>Creatina monohidrato, para fuerza y esfuerzos cortos e intensos.</li>
+                <li>Cafeína, en dosis moderadas, antes de entrenar.</li>
+                <li>Proteína en polvo: no es mejor que la comida, solo más cómoda.</li>
+              </ul>
+            </div>
+            <div class="par">
+              <h3>No merecen la pena</h3>
+              <ul>
+                <li>Quemagrasas y termogénicos.</li>
+                <li>BCAA si ya comes suficiente proteína.</li>
+                <li>Detox, «potenciadores» y fórmulas con nombres comerciales.</li>
+              </ul>
+            </div>
+          </div>
+          <p>Si compras, elige marcas con certificados de control antidopaje independientes, que garantizan que lleva lo que dice. Y en menores de 18 años, ningún suplemento sin hablarlo con el pediatra o médico deportivo.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/comun.js"></script>
+  <script>
+    (function () {
+      const entrada = document.getElementById("kilos");
+      const salida = document.getElementById("rango");
+      entrada.addEventListener("input", () => {
+        const kg = parseFloat(entrada.value.replace(",", "."));
+        if (!kg || kg < 35 || kg > 200) {
+          salida.textContent = "Escribe un peso entre 35 y 200 kilos.";
+          return;
+        }
+        const min = Math.round(kg * 1.2), max = Math.round(kg * 2);
+        salida.textContent = `Entre ${min} y ${max} gramos de proteína al día, repartidos en 3 o 4 comidas.`;
+      });
+    })();
+  </script>
+</body>
+</html>
