@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>despensa · comer bien en casa</title>
+  <meta name="description" content="Guía práctica de alimentación para toda la familia: perder peso sin dietas milagro, comer bien de pequeños y rendir entrenando.">
+  <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-pagina="inicio">
+  <main id="principal">
+    <section class="portada">
+      <div class="envoltorio">
+        <div>
+          <h1>Qué poner en el plato, sin dietas milagro</h1>
+          <p class="entradilla">Una guía práctica para comer mejor en casa: para perder peso con calma, para que los niños coman variado y para rendir cuando entrenas. Todo parte de la misma idea, el plato de la derecha.</p>
+          <p class="medida">Toca cada parte del plato para ver qué va en ella.</p>
+        </div>
+
+        <figure class="plato-figura">
+          <svg class="plato" id="plato" viewBox="0 0 480 400" role="group" aria-label="El método del plato. Elige una parte para leer qué incluye.">
+            <circle cx="200" cy="200" r="196" fill="var(--papel-2)" stroke="var(--linea)" stroke-width="2"/>
+            <g class="trozo" data-parte="verdura" tabindex="0" role="button" aria-label="Media parte: verduras y hortalizas">
+              <path d="M200 22 A178 178 0 0 0 200 378 L200 200 Z" fill="var(--hortaliza)" stroke="var(--papel-2)" stroke-width="6"/>
+              <text x="108" y="208" text-anchor="middle" fill="#fff" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="26">Verdura</text>
+              <text x="108" y="236" text-anchor="middle" fill="#fff" font-family="Atkinson Hyperlegible, sans-serif" font-size="16">la mitad</text>
+            </g>
+            <g class="trozo" data-parte="cereal" tabindex="0" role="button" aria-label="Un cuarto: cereales integrales y tubérculos">
+              <path d="M200 200 L200 22 A178 178 0 0 1 378 200 Z" fill="var(--grano)" stroke="var(--papel-2)" stroke-width="6"/>
+              <text x="276" y="125" text-anchor="middle" fill="#fff" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="22">Cereal</text>
+              <text x="276" y="149" text-anchor="middle" fill="#fff" font-family="Atkinson Hyperlegible, sans-serif" font-size="15">un cuarto</text>
+            </g>
+            <g class="trozo" data-parte="proteina" tabindex="0" role="button" aria-label="Un cuarto: proteína">
+              <path d="M200 200 L378 200 A178 178 0 0 1 200 378 Z" fill="var(--proteina)" stroke="var(--papel-2)" stroke-width="6"/>
+              <text x="276" y="268" text-anchor="middle" fill="#fff" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="22">Proteína</text>
+              <text x="276" y="292" text-anchor="middle" fill="#fff" font-family="Atkinson Hyperlegible, sans-serif" font-size="15">un cuarto</text>
+            </g>
+            <g class="trozo" data-parte="agua" tabindex="0" role="button" aria-label="Para beber: agua">
+              <path d="M418 70 L466 70 L458 196 Q457 206 447 206 L437 206 Q427 206 426 196 Z" fill="var(--papel)" stroke="var(--azulejo)" stroke-width="4"/>
+              <path d="M424 112 L460 112 L458 196 Q457 202 447 202 L437 202 Q428 202 427 196 Z" fill="var(--azulejo)" opacity="0.85"/>
+              <text x="442" y="236" text-anchor="middle" fill="var(--tinta)" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="18">Agua</text>
+            </g>
+            <g class="trozo" data-parte="aceite" tabindex="0" role="button" aria-label="Para cocinar y aliñar: aceite de oliva">
+              <path d="M434 262 L450 262 L450 278 Q466 290 466 312 L466 362 Q466 370 458 370 L426 370 Q418 370 418 362 L418 312 Q418 290 434 278 Z" fill="var(--grano-claro)" stroke="var(--tinta)" stroke-width="2.5"/>
+              <text x="442" y="394" text-anchor="middle" fill="var(--tinta)" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="18">Aceite</text>
+            </g>
+          </svg>
+          <figcaption class="plato-nota" id="plato-nota" aria-live="polite">
+            <strong>El método del plato</strong>
+            Medio plato de verdura, un cuarto de cereal o patata y un cuarto de proteína, con agua para beber y aceite de oliva para cocinar. Sirve para casi cualquier comida y no hace falta pesar nada.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="envoltorio">
+      <nav class="estantes" aria-label="Secciones de despensa">
+        <a class="estante s-peso" href="peso.html">
+          <h2>Perder peso</h2>
+          <p>Cambios pequeños que se mantienen: el plato, el hambre de verdad, qué cambiar en la compra y los mitos que conviene olvidar.</p>
+        </a>
+        <a class="estante s-ninos" href="ninos.html">
+          <h2>Niños</h2>
+          <p>Por edades, de 1 a 12 años: qué ofrecer, desayunos y meriendas, la fiambrera del cole y cómo lidiar con el «no me gusta».</p>
+        </a>
+        <a class="estante s-entrenar" href="entrenar.html">
+          <h2>Entrenar</h2>
+          <p>Qué comer antes, durante y después, cuánta proteína tiene sentido, cómo hidratarse y qué suplementos sobran.</p>
+        </a>
+        <a class="estante s-menu" href="menu.html">
+          <h2>Menú y compra</h2>
+          <p>Genera un menú semanal equilibrado para toda la familia y llévate la lista de la compra marcable al súper.</p>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <script src="js/comun.js"></script>
+  <script src="js/plato.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perder peso · despensa</title>
+  <meta name="description" content="Perder peso con cambios pequeños que se mantienen: el plato, el hambre de verdad, la compra y los mitos.">
+  <link rel="icon" href="img/tarro.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-pagina="peso" class="s-peso">
+  <main id="principal">
+    <header class="cabecera-seccion">
+      <div class="envoltorio">
+        <h1>Perder peso sin pasar hambre ni contar calorías</h1>
+        <p class="entradilla">Lo que funciona a largo plazo no es una dieta, es una forma de comer que puedas mantener dentro de un año. Aquí van los cambios con más efecto y menos sufrimiento.</p>
+      </div>
+    </header>
+
+    <div class="envoltorio cuerpo">
+      <nav class="indice" aria-label="En esta página">
+        <p>En esta página</p>
+        <ol>
+          <li><a href="#calma">Con calma</a></li>
+          <li><a href="#plato">El plato</a></li>
+          <li><a href="#hambre">El hambre de verdad</a></li>
+          <li><a href="#compra">Cambios en la compra</a></li>
+          <li><a href="#habitos">Hábitos que suman</a></li>
+          <li><a href="#mitos">Mitos</a></li>
+        </ol>
+      </nav>
+
+      <div class="contenido">
+        <section id="calma">
+          <h2>Con calma</h2>
+          <p>Las dietas muy restrictivas suelen funcionar unas semanas y después se abandonan; el peso vuelve y, a menudo, con algo de propina. Lo sostenible es lo contrario: pocos cambios, bien elegidos, que se convierten en costumbre.</p>
+          <p>Piensa en meses, no en semanas. Si en tres meses comes más verdura, menos ultraprocesado, duermes mejor y te mueves más, el peso acompaña, aunque la báscula vaya a su ritmo y suba y baje de un día para otro.</p>
+          <div class="aviso">
+            <p><strong>Habla con un profesional</strong> si tienes diabetes, hipertensión u otra enfermedad, tomas medicación, estás embarazada o dando el pecho, o necesitas perder mucho peso. Tu médico de cabecera puede derivarte a un dietista-nutricionista.</p>
+            <p>Y si pensar en la comida o en el peso te genera angustia, culpa o ansiedad, cuéntaselo también: eso merece atención antes que cualquier plan.</p>
+          </div>
+        </section>
+
+        <section id="plato">
+          <h2>El plato hace el trabajo</h2>
+          <p>No hace falta pesar ni apuntar nada. Si el plato es <strong>mitad verdura, un cuarto de proteína y un cuarto de cereal integral o patata</strong>, la cantidad se ajusta sola: la verdura llena mucho y aporta poco, y la proteína y la fibra quitan el hambre durante más tiempo.</p>
+          <div class="pares">
+            <div class="par">
+              <h3>Empieza por la verdura</h3>
+              <p>Una ensalada, una crema o un plato de verdura al principio de la comida reduce lo que comes después, sin esfuerzo.</p>
+            </div>
+            <div class="par">
+              <h3>Proteína en cada comida</h3>
+              <p>Legumbres, huevo, pescado, yogur natural o pollo. Es lo que más sacia y ayuda a no perder músculo.</p>
+            </div>
+            <div class="par">
+              <h3>Platos más pequeños</h3>
+              <p>Un plato de 24 cm en lugar de uno de 28 se ve igual de lleno con menos cantidad. Suena a truco, pero funciona.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="hambre">
+          <h2>El hambre de verdad</h2>
+          <p>Comer cuando hay hambre y parar cuando estás a gusto, no a reventar, es la habilidad que más ayuda. Esta escala sirve para preguntártelo antes y durante la comida. Pulsa un número.</p>
+          <div class="hambre" role="group" aria-label="Escala del hambre del 1 al 10">
+            <button type="button" style="--n:1" aria-pressed="false">1</button>
+            <button type="button" style="--n:2" aria-pressed="false">2</button>
+            <button type="button" style="--n:3" aria-pressed="false">3</button>
+            <button type="button" style="--n:4" aria-pressed="false">4</button>
+            <button type="button" style="--n:5" aria-pressed="false">5</button>
+            <button type="button" style="--n:6" aria-pressed="false">6</button>
+            <button type="button" style="--n:7" aria-pressed="false">7</button>
+            <button type="button" style="--n:8" aria-pressed="false">8</button>
+            <button type="button" style="--n:9" aria-pressed="false">9</button>
+            <button type="button" style="--n:10" aria-pressed="false">10</button>
+          </div>
+          <p class="hambre-texto" id="hambre-texto" aria-live="polite">1 es un hambre que marea; 10, tan lleno que molesta. Lo ideal es empezar a comer hacia el 3 y parar hacia el 6 o 7.</p>
+          <p>Comer despacio ayuda a notarlo: la sensación de saciedad tarda unos veinte minutos en llegar. Deja los cubiertos entre bocados y come sin pantallas cuando puedas.</p>
+        </section>
+
+        <section id="compra">
+          <h2>Cambios en la compra</h2>
+          <p>Lo que no está en casa no se come a deshoras. Estos cambios mantienen el gusto y mejoran mucho el carro.</p>
+          <ul class="cambio">
+            <li><span>Refrescos y zumos</span><span class="flecha" aria-hidden="true">por</span><span class="por">Agua, con gas, o con limón</span></li>
+            <li><span>Pan blanco y bollería</span><span class="flecha" aria-hidden="true">por</span><span class="por">Pan integral de verdad, avena</span></li>
+            <li><span>Yogures azucarados</span><span class="flecha" aria-hidden="true">por</span><span class="por">Yogur natural con fruta</span></li>
+            <li><span>Patatas fritas de bolsa</span><span class="flecha" aria-hidden="true">por</span><span class="por">Frutos secos naturales, un puñado</span></li>
+            <li><span>Embutidos y salchichas</span><span class="flecha" aria-hidden="true">por</span><span class="por">Huevo, atún, hummus, queso fresco</span></li>
+            <li><span>Platos preparados</span><span class="flecha" aria-hidden="true">por</span><span class="por">Legumbre cocida de bote, verdura congelada</span></li>
+            <li><span>Salsas de bote</span><span class="flecha" aria-hidden="true">por</span><span class="por">Aceite de oliva, especias, limón, ajo</span></li>
+          </ul>
+          <h3>Cómo leer una etiqueta en diez segundos</h3>
+          <ol>
+            <li>Mira la lista de ingredientes: van ordenados de más a menos cantidad. Si el azúcar o un aceite refinado salen entre los primeros, a otra cosa.</li>
+            <li>Pocos ingredientes y reconocibles suele ser buena señal.</li>
+            <li>El azúcar se esconde con muchos nombres: jarabe, sirope, dextrosa, glucosa, fructosa, miel, concentrado de zumo.</li>
+            <li>«Light», «0 %» o «fit» no significan sano. Compara la etiqueta, no el envase.</li>
+          </ol>
+        </section>
+
+        <section id="habitos">
+          <h2>Hábitos que suman</h2>
+          <div class="pares">
+            <div class="par">
+              <h3>Moverse a diario</h3>
+              <p>La OMS recomienda a los adultos entre 150 y 300 minutos semanales de actividad moderada, más dos días de fuerza. Caminar a paso ligero cuenta.</p>
+            </div>
+            <div class="par">
+              <h3>Dormir bien</h3>
+              <p>Dormir poco dispara el hambre y las ganas de dulce al día siguiente. Siete horas o más marcan diferencia.</p>
+            </div>
+            <div class="par">
+              <h3>Cocinar más</h3>
+              <p>Cocinar en tanda el domingo (legumbre, verdura asada, arroz) resuelve media semana y evita el «pido algo».</p>
+            </div>
+            <div class="par">
+              <h3>Sin prohibidos</h3>
+              <p>Prohibir del todo un alimento suele acabar en atracón. Mejor que sea de ocasión, comido con calma y sentado.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="mitos">
+          <h2>Mitos que conviene olvidar</h2>
+          <div class="tabla-scroll">
+            <table>
+              <thead><tr><th scope="col">Se dice</th><th scope="col">Lo que sabemos</th></tr></thead>
+              <tbody>
+                <tr><td>La fruta de noche engorda</td><td>La fruta tiene lo mismo a las nueve de la mañana que a las nueve de la noche. Cuenta el total del día.</td></tr>
+                <tr><td>Hay que quitar los hidratos</td><td>Quitar pan, arroz y legumbre no hace falta. Lo que conviene es elegirlos integrales y no hacerlos protagonistas del plato.</td></tr>
+                <tr><td>Los productos detox depuran</td><td>De depurar se encargan el hígado y los riñones. Zumos y batidos detox no aportan nada que no haga ya tu cuerpo.</td></tr>
+                <tr><td>Saltarse el desayuno engorda</td><td>Depende de la persona. Lo importante es lo que comes en el día, no a qué hora empiezas.</td></tr>
+                <tr><td>Beber agua en la comida engorda</td><td>El agua no tiene calorías, la bebas cuando la bebas.</td></tr>
+                <tr><td>Hay que hacer cinco comidas al día</td><td>Tres o cinco: lo que mejor te funcione para llegar sin un hambre feroz a la siguiente comida.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/comun.js"></script>
+  <script>
+    (function () {
+      const textos = {
+        1: "1 · Hambre que marea. Si llegas aquí a menudo, comes de más en la siguiente comida: conviene no saltarse comidas.",
+        2: "2 · Mucha hambre, irritable. Es el momento en que se come rápido y lo que pilles.",
+        3: "3 · Hambre clara. Buen momento para empezar a comer.",
+        4: "4 · Empieza a apetecer. Puedes comer ya o esperar un poco.",
+        5: "5 · Ni hambre ni lleno. Si estás comiendo, para un momento y pregúntate cómo vas.",
+        6: "6 · Satisfecho. Un buen punto para parar.",
+        7: "7 · Lleno pero cómodo. Parar aquí también está bien.",
+        8: "8 · Algo pesado. Te has pasado un poco; no pasa nada, la próxima vez para antes.",
+        9: "9 · Muy lleno, incómodo. Suele pasar al comer deprisa o con pantallas.",
+        10: "10 · Tan lleno que duele. Comer más despacio es lo que más ayuda a no llegar aquí.",
+      };
+      const botones = document.querySelectorAll(".hambre button");
+      const salida = document.getElementById("hambre-texto");
+      botones.forEach(b => b.addEventListener("click", () => {
+        botones.forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        salida.textContent = textos[b.textContent];
+      }));
+    })();
+  </script>
+</body>
+</html>
