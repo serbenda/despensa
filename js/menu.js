@@ -1,7 +1,7 @@
-// despensa — generador de menú semanal, despensa de casa y lista de la compra.
-// Lo que marcas como «lo tengo», tanto en la despensa como en la lista de la compra,
-// es el mismo conjunto: sirve para hacer el menú a partir de lo que hay en casa
-// y para que la lista solo pida lo que falta.
+// despensa — menú semanal en tres pasos: el menú (desayuno, comida, merienda y cena),
+// la lista de la compra y qué cocinar hoy.
+// Lo que marcas en la lista de la compra significa «lo tengo en casa». Si hay algo
+// marcado, cualquier menú nuevo lo aprovecha primero, sin saltarse las raciones de la AESAN.
 (function () {
   const DIAS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
   const ORDEN_PASILLOS = ["Fruta y verdura", "Pescadería", "Carnicería", "Huevos y lácteos", "Despensa", "Pan y cereales", "Congelados"];
@@ -11,6 +11,13 @@
   const PLAN = {
     normal: { legumbre: 4, pescado: 3, huevo: 3, carne: 3, verdura: 1 },
     vegetariano: { legumbre: 6, huevo: 4, verdura: 4 },
+  };
+  const OBJETIVOS = {
+    legumbre: { min: 4, texto: "al menos 4" },
+    pescado: { min: 3, texto: "3 o más" },
+    huevo: { max: 4, texto: "hasta 4" },
+    carne: { max: 3, texto: "como mucho 3, mejor de ave" },
+    verdura: { texto: "platos de verdura como protagonista" },
   };
 
   // Ingredientes que dan sabor pero no deciden el plato: pesan menos al buscar coincidencias.
@@ -29,7 +36,7 @@
     try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* sin almacenamiento */ }
   }
 
-  // Catálogo de todo lo que puede haber en casa: ingredientes de los platos y básicos.
+  // Todo lo que puede haber en casa: ingredientes de los platos y básicos.
   const CATALOGO = {};
   for (const [pasillo, lista] of Object.entries(PASILLOS)) lista.forEach(x => { CATALOGO[x] = pasillo; });
   BASICOS.forEach(([nombre, pasillo]) => { CATALOGO[nombre.toLowerCase()] = pasillo; });
@@ -38,6 +45,18 @@
 
   const tieneCarneOPescado = p =>
     p.i.some(x => PASILLO_DE[x] === "Pescadería" || PASILLO_DE[x] === "Carnicería" || x === "atún al natural");
+  const tieneHuevo = p => p.i.includes("huevos");
+  const MAX_HUEVOS = 4; // AESAN: hasta 4 huevos a la semana, contando todas las comidas
+
+  // Cuántos platos con huevo hay en total en la semana, menos los huecos indicados.
+  function huevosEnSemana(e, sin) {
+    sin = sin || {};
+    let n = 0;
+    e.menu.forEach((i, h) => { if (sin.menu !== h && tieneHuevo(PLATOS[i])) n++; });
+    (e.desayunos || []).forEach((i, h) => { if (sin.d !== h && tieneHuevo(DESAYUNOS[i])) n++; });
+    (e.meriendas || []).forEach((i, h) => { if (sin.m !== h && tieneHuevo(MERIENDAS[i])) n++; });
+    return n;
+  }
 
   function candidatos(grupo, vegetariano) {
     return PLATOS.map((p, idx) => ({ p, idx }))
@@ -53,27 +72,43 @@
     return b;
   }
 
+  const peso = (x, k) => (k === 0 ? 2 : CONDIMENTOS.has(x) ? 0.5 : 1);
+
   // Qué parte de un plato tienes ya. El ingrediente principal (el primero) pesa el doble
   // y los condimentos, la mitad.
   function cobertura(p, casa) {
     let total = 0, hay = 0;
     const faltan = [];
     p.i.forEach((x, k) => {
-      const peso = k === 0 ? 2 : CONDIMENTOS.has(x) ? 0.5 : 1;
-      total += peso;
-      if (casa.has(x)) hay += peso; else faltan.push(x);
+      total += peso(x, k);
+      if (casa.has(x)) hay += peso(x, k); else faltan.push(x);
     });
     return { valor: hay / total, faltan };
   }
 
+  // Puntuación para elegir plato: lo que ya tienes cuenta entero; lo que ya vas a comprar
+  // para otro plato de la semana cuenta un poco (así la lista sale más corta); y un toque
+  // de azar para que cada menú sea distinto. Los platos del menú anterior se evitan.
+  function puntuar(p, casa, compra, azar, anterior, idx) {
+    let total = 0, s = 0;
+    p.i.forEach((x, k) => {
+      total += peso(x, k);
+      if (casa.has(x)) s += peso(x, k);
+      else if (compra.has(x)) s += 0.25 * peso(x, k);
+    });
+    // Si el ingrediente principal ya está en casa, el plato gana mucho peso.
+    const principal = casa.has(p.i[0]) ? 0.35 : 0;
+    return s / total + principal + Math.random() * azar - (anterior.has(idx) ? 0.18 : 0);
+  }
+
   // Reparte los grupos en 14 huecos: comida y cena de un mismo día nunca del mismo grupo,
-  // y la legumbre preferentemente a mediodía.
+  // y la legumbre a mediodía (en el menú vegetariano, como mucho dos cenas).
   function repartirGrupos(vegetariano) {
     const plan = PLAN[vegetariano ? "vegetariano" : "normal"];
     const bolsa = [];
     for (const [g, n] of Object.entries(plan)) for (let k = 0; k < n; k++) bolsa.push(g);
     const maxLegumbreCena = vegetariano ? 2 : 0;
-    for (let intento = 0; intento < 2000; intento++) {
+    for (let intento = 0; intento < 20000; intento++) {
       const h = barajar(bolsa);
       let ok = true, legCena = 0;
       for (let d = 0; d < 7 && ok; d++) {
@@ -82,40 +117,78 @@
       }
       if (ok && legCena <= maxLegumbreCena) return h;
     }
-    return barajar(bolsa);
+    // Reparto seguro si el azar no encuentra uno (muy improbable).
+    return vegetariano
+      ? ["legumbre", "huevo", "legumbre", "verdura", "legumbre", "huevo", "legumbre", "verdura", "huevo", "legumbre", "legumbre", "verdura", "verdura", "huevo"]
+      : ["legumbre", "pescado", "legumbre", "huevo", "carne", "pescado", "legumbre", "huevo", "legumbre", "carne", "verdura", "pescado", "carne", "huevo"];
   }
 
-  // Ordena las opciones: al azar, o primero las que más aprovechan lo que tienes
-  // (con un poco de azar para que no salga siempre lo mismo).
-  function ordenar(opciones, modo, casa) {
-    if (modo !== "casa") return barajar(opciones);
-    return opciones
-      .map(o => ({ o, s: cobertura(o.p, casa).valor + Math.random() * 0.12 }))
-      .sort((a, b) => b.s - a.s)
-      .map(x => x.o);
+  // Elige 7 desayunos o meriendas: sin repetir si se puede, sin carne ni pescado en el
+  // menú vegetariano y sin pasarse de huevos.
+  function elegirExtras(lista, vegetariano, casa, compra, azar, anterior, huevosLibres) {
+    const elegidos = [];
+    let libres = huevosLibres;
+    for (let k = 0; k < 7; k++) {
+      let opciones = lista.map((p, idx) => ({ p, idx }))
+        .filter(o => !(vegetariano && tieneCarneOPescado(o.p)) && !(libres <= 0 && tieneHuevo(o.p)));
+      const sinRepetir = opciones.filter(o => !elegidos.includes(o.idx));
+      if (sinRepetir.length) opciones = sinRepetir;
+      const o = opciones.map(o => ({ o, s: puntuar(o.p, casa, compra, azar, anterior, o.idx) })).sort((a, b) => b.s - a.s)[0].o;
+      if (tieneHuevo(o.p)) libres--;
+      o.p.i.forEach(x => compra.add(x));
+      elegidos.push(o.idx);
+    }
+    return { elegidos, libres };
   }
 
-  function generar(vegetariano, modo, marcados) {
+  function generar(vegetariano, marcados, anteriorEstado) {
     const casa = new Set(marcados);
+    const prev = anteriorEstado || {};
+    const anterior = new Set(prev.menu || []);
+    const azar = casa.size ? 0.15 : 1;
     const huecos = repartirGrupos(vegetariano);
-    // En modo «con lo que tengo», rellena primero los grupos con más donde elegir
-    // para que los mejores platos no se gasten en el primer hueco.
-    const orden = huecos.map((g, i) => i);
-    if (modo === "casa") orden.sort(() => Math.random() - 0.5);
     const usados = new Set();
+    const compra = new Set();
     let rojas = 0;
+    // Los huecos del grupo huevo ya gastan su cupo; el resto de platos con huevo, del sobrante.
+    let huevosLibres = MAX_HUEVOS - huecos.filter(g => g === "huevo").length;
     const menu = new Array(14);
-    orden.forEach(i => {
+    barajar(huecos.map((g, i) => i)).forEach(i => {
       const g = huecos[i];
       let opciones = candidatos(g, vegetariano).filter(o => !usados.has(o.idx));
       // Carne roja o de cerdo: como mucho una vez por semana.
       if (g === "carne" && rojas >= 1) opciones = opciones.filter(o => o.p.blanca);
-      const elegido = ordenar(opciones, modo, casa)[0] || barajar(candidatos(g, vegetariano))[0];
+      if (g !== "huevo" && huevosLibres <= 0) opciones = opciones.filter(o => !tieneHuevo(o.p));
+      const elegido = opciones
+        .map(o => ({ o, s: puntuar(o.p, casa, compra, azar, anterior, o.idx) }))
+        .sort((a, b) => b.s - a.s)[0].o;
       if (g === "carne" && !elegido.p.blanca) rojas++;
+      if (g !== "huevo" && tieneHuevo(elegido.p)) huevosLibres--;
       usados.add(elegido.idx);
+      elegido.p.i.forEach(x => compra.add(x));
       menu[i] = elegido.idx;
     });
-    return { vegetariano, modo, menu, marcados: [...casa] };
+    const d = elegirExtras(DESAYUNOS, vegetariano, casa, compra, azar, new Set(prev.desayunos || []), huevosLibres);
+    const m = elegirExtras(MERIENDAS, vegetariano, casa, compra, azar, new Set(prev.meriendas || []), d.libres);
+    return { vegetariano, menu, desayunos: d.elegidos, meriendas: m.elegidos, marcados: [...casa] };
+  }
+
+  // Comprueba que un menú guardado sigue cumpliendo todas las reglas.
+  function cumpleReglas(e) {
+    const menu = e.menu, vegetariano = !!e.vegetariano;
+    const extrasOk = (arr, lista) => Array.isArray(arr) && arr.length === 7 && arr.every(i => Number.isInteger(i) && lista[i]) &&
+      !(vegetariano && arr.some(i => tieneCarneOPescado(lista[i])));
+    if (!extrasOk(e.desayunos, DESAYUNOS) || !extrasOk(e.meriendas, MERIENDAS)) return false;
+    if (huevosEnSemana(e) > MAX_HUEVOS) return false;
+    const g = menu.map(i => PLATOS[i].g);
+    const n = k => g.filter(x => x === k).length;
+    if (vegetariano && menu.some(i => tieneCarneOPescado(PLATOS[i]))) return false;
+    if (n("legumbre") < 4 || n("huevo") > 4) return false;
+    if (!vegetariano && (n("pescado") < 3 || n("carne") > 3)) return false;
+    if (menu.filter(i => PLATOS[i].g === "carne" && !PLATOS[i].blanca).length > 1) return false;
+    for (let d = 0; d < 7; d++) if (g[2 * d] === g[2 * d + 1]) return false;
+    const cenasLegumbre = [1, 3, 5, 7, 9, 11, 13].filter(h => g[h] === "legumbre").length;
+    return cenasLegumbre <= (vegetariano ? 2 : 0);
   }
 
   function cambiar(hueco) {
@@ -126,21 +199,46 @@
     if (actual.g === "carne" && (actual.blanca ? rojasEnMenu >= 1 : rojasEnMenu > 1)) {
       opciones = opciones.filter(o => o.p.blanca);
     }
+    if (actual.g !== "huevo" && huevosEnSemana(estado, { menu: hueco }) >= MAX_HUEVOS) {
+      opciones = opciones.filter(o => !tieneHuevo(o.p));
+    }
     if (!opciones.length) return;
-    const ordenadas = ordenar(opciones, estado.modo, tengo());
-    // Con lo que tengo: una de las tres mejores, para poder ir probando.
-    const pool = estado.modo === "casa" ? ordenadas.slice(0, 3) : ordenadas;
-    estado.menu[hueco] = pool[Math.floor(Math.random() * pool.length)].idx;
+    const casa = tengo();
+    const compra = new Set();
+    estado.menu.forEach((i, h) => { if (h !== hueco) PLATOS[i].i.forEach(x => compra.add(x)); });
+    const mejores = opciones
+      .map(o => ({ o, s: puntuar(o.p, casa, compra, casa.size ? 0.15 : 1, new Set(), o.idx) }))
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 3);
+    estado.menu[hueco] = mejores[Math.floor(Math.random() * mejores.length)].o.idx;
     guardar();
     pintar();
     const boton = document.querySelector(`[data-hueco="${hueco}"]`);
     if (boton) boton.focus();
   }
 
+  function cambiarExtra(tipo, h) {
+    const lista = tipo === "d" ? DESAYUNOS : MERIENDAS;
+    const arr = tipo === "d" ? estado.desayunos : estado.meriendas;
+    const sinHueco = tipo === "d" ? { d: h } : { m: h };
+    const sinHuevo = huevosEnSemana(estado, sinHueco) >= MAX_HUEVOS;
+    let opciones = lista.map((p, idx) => ({ p, idx }))
+      .filter(o => o.idx !== arr[h] && !(estado.vegetariano && tieneCarneOPescado(o.p)) && !(sinHuevo && tieneHuevo(o.p)));
+    const nuevos = opciones.filter(o => !arr.includes(o.idx));
+    if (nuevos.length) opciones = nuevos;
+    if (!opciones.length) return;
+    arr[h] = opciones[Math.floor(Math.random() * opciones.length)].idx;
+    guardar();
+    pintar();
+    const boton = document.querySelector(`[data-extra="${tipo}${h}"]`);
+    if (boton) boton.focus();
+  }
+
   function listaCompra() {
     const items = new Map();
-    estado.menu.forEach(i => PLATOS[i].i.forEach(x => {
-      if (!items.has(x)) items.set(x, { nombre: mayus(x), pasillo: PASILLO_DE[x] });
+    const platos = [...estado.menu.map(i => PLATOS[i]), ...estado.desayunos.map(i => DESAYUNOS[i]), ...estado.meriendas.map(i => MERIENDAS[i])];
+    platos.forEach(p => p.i.forEach(x => {
+      if (!items.has(x)) items.set(x, { nombre: mayus(x), pasillo: CATALOGO[x] });
     }));
     BASICOS.forEach(([nombre, pasillo]) => {
       const k = nombre.toLowerCase();
@@ -151,54 +249,59 @@
     return { porPasillo, total: items.size, claves: [...items.keys()] };
   }
 
-  const etiquetaCobertura = (c, n) => {
-    if (!c.faltan.length) return `<span class="cobertura completa" title="Tienes todo">✓ Lo tienes todo</span>`;
+  const etiquetaCobertura = c => {
+    if (!c.faltan.length) return `<span class="cobertura completa">✓ Lo tienes todo</span>`;
     const txt = c.faltan.length === 1 ? `Falta ${c.faltan[0]}` : `Faltan ${c.faltan.length}`;
     return `<span class="cobertura" title="Te falta: ${c.faltan.join(", ")}">${txt}</span>`;
   };
 
   function pintarSemana(casa) {
+    const fila = (etiqueta, p, boton, clase) => `<dt>${etiqueta}</dt>
+          <dd class="${clase}"><span><span class="plato-nombre">${p.n}</span>
+            ${boton}
+            ${casa.size ? etiquetaCobertura(cobertura(p, casa)) : ""}</span></dd>`;
     $("semana").innerHTML = DIAS.map((dia, d) => {
-      const fila = [0, 1].map(m => {
-        const hueco = d * 2 + m;
-        const p = PLATOS[estado.menu[hueco]];
-        const c = cobertura(p, casa);
-        return `<dt>${m === 0 ? "Comida" : "Cena"}</dt>
-          <dd class="g-${p.g}"><span><span class="sr">${NOMBRE_GRUPO[p.g]}: </span>${p.n}
-            <button type="button" class="cambiar" data-hueco="${hueco}" aria-label="Cambiar ${p.n}">cambiar</button>
-            ${casa.size ? etiquetaCobertura(c) : ""}</span></dd>`;
-      }).join("");
-      return `<article class="dia"><h3>${dia}</h3><dl>${fila}</dl></article>`;
+      const comida = PLATOS[estado.menu[d * 2]], cena = PLATOS[estado.menu[d * 2 + 1]];
+      const des = DESAYUNOS[estado.desayunos[d]], mer = MERIENDAS[estado.meriendas[d]];
+      return `<article class="dia"><h3>${dia}</h3><dl>
+        ${fila("Desayuno", des, `<button type="button" class="cambiar" data-extra="d${d}" aria-label="Cambiar desayuno del ${dia.toLowerCase()}">cambiar</button>`, "ligera")}
+        ${fila("Comida", comida, `<button type="button" class="cambiar" data-hueco="${d * 2}" aria-label="Cambiar ${comida.n}">cambiar</button>`, "g-" + comida.g)}
+        ${fila("Merienda", mer, `<button type="button" class="cambiar" data-extra="m${d}" aria-label="Cambiar merienda del ${dia.toLowerCase()}">cambiar</button>`, "ligera")}
+        ${fila("Cena", cena, `<button type="button" class="cambiar" data-hueco="${d * 2 + 1}" aria-label="Cambiar ${cena.n}">cambiar</button>`, "g-" + cena.g)}
+      </dl></article>`;
     }).join("");
+    $("nota-menu").innerHTML = casa.size
+      ? `Este menú aprovecha primero las <strong>${casa.size}</strong> cosas que has marcado como «lo tengo» en la lista de la compra.`
+      : `Cada menú cumple las raciones semanales recomendadas. Si marcas en la lista de la compra lo que ya tienes, el menú lo aprovechará.`;
   }
 
   function pintarRecuento() {
     const cuenta = {};
     estado.menu.forEach(i => { const g = PLATOS[i].g; cuenta[g] = (cuenta[g] || 0) + 1; });
-    const objetivos = {
-      legumbre: { min: 4, texto: "al menos 4" },
-      pescado: { min: 3, texto: "3 o más" },
-      huevo: { max: 4, texto: "hasta 4" },
-      carne: { max: 3, texto: "como mucho 3, mejor de ave" },
-      verdura: { texto: "platos de verdura como protagonista" },
-    };
+    let todoOk = true;
     $("recuento").innerHTML = Object.keys(NOMBRE_GRUPO)
       .filter(g => cuenta[g] || (g === "pescado" && !estado.vegetariano))
       .map(g => {
-        const n = cuenta[g] || 0, o = objetivos[g];
+        const n = cuenta[g] || 0, o = OBJETIVOS[g];
         const ok = (o.min === undefined || n >= o.min) && (o.max === undefined || n <= o.max);
+        if (!ok) todoOk = false;
         let puntos = "";
         for (let k = 0; k < n; k++) puntos += "<i></i>";
         return `<li class="g-${g}"><span class="r-nombre">${NOMBRE_GRUPO[g]}</span><span class="r-puntos" aria-hidden="true">${puntos}</span><span class="r-n">${n} ${n === 1 ? "vez" : "veces"}</span><span class="r-meta">${ok ? "✓ " : ""}Recomendación: ${o.texto}</span></li>`;
       }).join("");
+    $("recuento-resumen").textContent = todoOk ? "✓ Cumple las raciones semanales recomendadas" : "Revisa las raciones de la semana";
   }
 
   function resumenCompra(casa) {
     const { total, claves } = listaCompra();
     const faltan = claves.filter(k => !casa.has(k)).length;
-    $("compra-resumen").innerHTML = faltan
-      ? `Para este menú te faltan <strong>${faltan}</strong> de ${total} productos. Marca lo que ya tienes en casa y pulsa «Rehacer el menú con lo marcado» para aprovecharlo.`
-      : `<strong>Lo tienes todo.</strong> No hace falta ir a comprar para este menú.`;
+    $("compra-contador").innerHTML = faltan
+      ? `<b>${faltan}</b><span>${faltan === 1 ? "producto por comprar" : "productos por comprar"}<br><small>de ${total} que necesita el menú</small></span>`
+      : `<b>✓</b><span>Lo tienes todo<br><small>no hace falta ir a comprar</small></span>`;
+    $("ajustar").disabled = !casa.size;
+    $("ajustar-ayuda").textContent = casa.size
+      ? "El menú se rehace para usar primero lo que tienes."
+      : "Marca primero lo que ya tienes en casa.";
   }
 
   // La lista de la compra: los ingredientes del menú. Marcar = «lo tengo».
@@ -214,6 +317,11 @@
   }
 
   // Más cosas que puedes tener en casa aunque este menú no las use.
+  function contarOtros(casa) {
+    const enLista = new Set(listaCompra().claves);
+    const n = [...casa].filter(k => !enLista.has(k)).length;
+    $("otros-cuenta").textContent = n ? `${n} marcadas` : "";
+  }
   function pintarOtros(casa) {
     const enLista = new Set(listaCompra().claves);
     const filtro = ($("buscar-otros").value || "").trim().toLowerCase();
@@ -222,8 +330,7 @@
       if (enLista.has(k) || (filtro && !k.includes(filtro))) return;
       (porPasillo[CATALOGO[k]] ||= []).push(k);
     });
-    const marcadosFuera = [...casa].filter(k => !enLista.has(k)).length;
-    $("otros-cuenta").textContent = marcadosFuera ? `(${marcadosFuera} marcados)` : "";
+    contarOtros(casa);
     $("otros").innerHTML = ORDEN_PASILLOS.filter(p => porPasillo[p]).map(pasillo =>
       `<li class="bloque"><p class="grupo">${pasillo}</p><ul>` + porPasillo[pasillo].map(k =>
         `<li><label><input type="checkbox" data-clave="${k}"${casa.has(k) ? " checked" : ""}><span>${mayus(k)}</span></label></li>`).join("") + `</ul></li>`
@@ -257,11 +364,7 @@
 
   function pintar() {
     const casa = tengo();
-    $("vegetariano").checked = estado.vegetariano;
-    document.querySelectorAll('input[name="modo-menu"]').forEach(r => { r.checked = r.value === estado.modo; });
-    $("modo-nota").textContent = estado.modo === "casa"
-      ? (casa.size ? "El menú aprovecha primero lo que has marcado en la lista de la compra, sin saltarse las raciones recomendadas." : "Marca en la lista de la compra lo que ya tienes en casa para que el menú lo aproveche.")
-      : "Platos al azar que cumplen las raciones recomendadas.";
+    $("vegetariano").checked = !!estado.vegetariano;
     pintarSemana(casa);
     pintarRecuento();
     pintarCompra(casa);
@@ -276,34 +379,39 @@
     guardar();
   }
 
+  // Carga: acepta datos de versiones anteriores y descarta los que no cuadran.
   let estado = leer();
-  const valido = estado && Array.isArray(estado.menu) && estado.menu.length === 14 && estado.menu.every(i => PLATOS[i]);
-  if (!valido) { estado = generar(false, "azar", []); guardar(); }
-  if (!estado.modo) estado.modo = "azar";
-  if (!Array.isArray(estado.marcados)) estado.marcados = [];
+  if (!estado || typeof estado !== "object") estado = {};
+  const previos = Array.isArray(estado.marcados) ? estado.marcados.filter(k => typeof k === "string") : [];
+  const veg = !!estado.vegetariano;
+  const valido = Array.isArray(estado.menu) && estado.menu.length === 14 &&
+    estado.menu.every(i => Number.isInteger(i) && PLATOS[i]) && new Set(estado.menu).size === 14 &&
+    cumpleReglas({ ...estado, vegetariano: veg });
+  if (!valido) estado = generar(veg, previos);
+  estado = { vegetariano: veg, menu: estado.menu, desayunos: estado.desayunos, meriendas: estado.meriendas, marcados: previos };
+  guardar();
   pintar();
 
-  const rehacer = () => { estado = generar(estado.vegetariano, estado.modo, estado.marcados); guardar(); pintar(); };
+  const rehacer = () => { estado = generar(estado.vegetariano, estado.marcados, estado); guardar(); pintar(); };
 
   $("nuevo").addEventListener("click", rehacer);
   $("vegetariano").addEventListener("change", e => { estado.vegetariano = e.target.checked; rehacer(); });
-  document.querySelectorAll('input[name="modo-menu"]').forEach(r => r.addEventListener("change", e => { estado.modo = e.target.value; rehacer(); }));
   $("imprimir").addEventListener("click", () => window.print());
   $("desmarcar").addEventListener("click", () => { estado.marcados = []; guardar(); pintar(); });
-
   $("semana").addEventListener("click", e => {
     const b = e.target.closest(".cambiar");
-    if (b) cambiar(Number(b.dataset.hueco));
+    if (!b) return;
+    if (b.dataset.extra) cambiarExtra(b.dataset.extra[0], Number(b.dataset.extra.slice(1)));
+    else cambiar(Number(b.dataset.hueco));
   });
-  // Marcar en la lista de la compra o en «otras cosas» es lo mismo: «lo tengo».
+
+  // Marcar en la lista o en «otras cosas» es lo mismo: «lo tengo».
   const alMarcar = e => {
     const c = e.target.dataset && e.target.dataset.clave;
     if (!c) return;
     marcar(c, e.target.checked);
     const casa = tengo();
-    pintarSemana(casa); pintarHoy(casa); resumenCompra(casa);
-    const n = [...casa].filter(k => !new Set(listaCompra().claves).has(k)).length;
-    $("otros-cuenta").textContent = n ? `(${n} marcados)` : "";
+    pintarSemana(casa); pintarHoy(casa); resumenCompra(casa); contarOtros(casa);
   };
   $("compra").addEventListener("change", alMarcar);
   $("otros").addEventListener("change", alMarcar);
@@ -315,9 +423,8 @@
     guardar();
     pintar();
   });
-  $("menu-con-lo-marcado").addEventListener("click", () => {
-    estado.modo = "casa";
+  $("ajustar").addEventListener("click", () => {
     rehacer();
-    document.getElementById("t-semana").scrollIntoView({ block: "start" });
+    $("paso-menu").scrollIntoView({ block: "start" });
   });
 })();

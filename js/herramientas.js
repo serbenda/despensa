@@ -34,6 +34,8 @@
     nutrientes: '<path d="M9 3h6M10 3v6l-5.2 9.2A2 2 0 0 0 6.5 21h11a2 2 0 0 0 1.7-2.8L14 9V3M7.5 15h9"/>',
     fiambrera: '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M9 8V5h6v3"/>',
     menu: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    dia: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    desayuno: '<path d="M4 9h13v5a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 2c0 2 2 2 2 4M12 2c0 2 2 2 2 4"/>',
   };
   const icono = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
 
@@ -611,6 +613,95 @@
       if (j !== null) { e.preventDefault(); bs[j].focus(); pintar(bs[j].dataset.k); }
     });
     pintar(el.dataset.inicial || "fibra");
+  };
+
+  // ---------------------------------------------------------------- Tu día por persona
+  const PERSONAS = {
+    p13: { t: "1 a 3 años", agua: "Entre 1,1 y 1,3 litros al día, contando la leche y lo que lleva la comida.", beber: "Agua y leche (entera hasta los 2 años). Ni zumos ni refrescos.",
+      ojo: ["Raciones pequeñas: deja que repita si quiere.", "Sin sal ni azúcar añadidos.", "Frutos secos, solo molidos o en crema; uvas y tomates cherry, en cuartos."] },
+    p48: { t: "4 a 8 años", agua: "Unos 1,6 litros al día en total.", beber: "Agua como bebida de diario; leche o yogur natural dos o tres veces al día.",
+      ojo: ["Que no salga de casa sin desayunar algo.", "Con extraescolares, merienda con proteína: bocadillo o yogur.", "Los dulces, de fiesta, nunca como premio."] },
+    p913: { t: "9 a 13 años", agua: "Unos 1,9 litros al día las niñas y 2,1 los niños, en total.", beber: "Agua; leche o yogur tres veces al día para el calcio del crecimiento.",
+      ojo: ["Crece deprisa: calcio y proteína en cada comida.", "Que aprenda a prepararse el desayuno y la merienda.", "Ojo con las bebidas azucaradas y energéticas fuera de casa."] },
+    adol: { t: "14 a 17 años", agua: "Unos 2 litros al día las chicas y 2,5 los chicos, en total.", beber: "Agua. Nada de bebidas energéticas; café, poco y nunca para estudiar de noche.",
+      ojo: ["No saltarse el desayuno: se rinde mejor en clase.", "Hierro en las chicas: legumbre con vitamina C, carne o pescado.", "Si quiere «hacer dieta», mejor hablarlo con su médico."] },
+    adulto: { t: "Adulto", agua: "Unos 2 litros al día las mujeres y 2,5 los hombres, en total: alrededor de 1,6 y 2 litros en bebida.", beber: "Agua; café o té sin pasar de unos 400 mg de cafeína al día, unos cuatro cafés.",
+      ojo: ["Medio plato de verdura en comida y cena.", "Legumbre al menos cuatro veces por semana.", "El alcohol, cuanto menos, mejor."] },
+    embarazo: { t: "Embarazo o lactancia", agua: "Unos 2,3 litros al día en el embarazo y 2,7 en la lactancia, en total.", beber: "Agua; cafeína como mucho 200 mg al día, unos dos cafés. Nada de alcohol.",
+      ojo: ["Ácido fólico y yodo, como indique tu matrona.", "Nada de pez espada, tiburón, atún rojo ni lucio.", "Carne bien hecha, nada de quesos de leche cruda y verdura bien lavada."] },
+    mayor: { t: "Mayor de 65", agua: "Unos 2 litros al día las mujeres y 2,5 los hombres, en total, aunque no haya sed.", beber: "Agua repartida en el día, también en infusión o caldo: la sed avisa tarde.",
+      ojo: ["Proteína en cada comida para conservar el músculo.", "Raciones más pequeñas y más frecuentes si falta el apetito.", "Perder peso sin querer es motivo de consulta."] },
+    deporte: { t: "Entrenas a diario", agua: "Lo de un adulto más lo que pierdas sudando: calcúlalo en la herramienta de sudor.", beber: "Agua; en sesiones de más de una hora, bebida con hidratos y sales.",
+      ojo: ["Más cereal los días de mucha carga.", "De 20 a 40 g de proteína en cada comida.", "Algo con hidratos entre 1 y 3 horas antes de entrenar."] },
+  };
+  const COMIDAS_DIA = {
+    desayuno: { t: "Desayuno", reparto: "20 a 25 %", formula: "Cereal integral + lácteo o proteína + fruta",
+      ideas: ["Tostada integral con tomate y aceite, y un vaso de leche", "Copos de avena con yogur natural, plátano y nueces", "Tostada integral con aguacate y huevo, y una naranja", "Yogur natural con fresas y un puñado de frutos secos", "Tostada integral con queso fresco y tomate, y una mandarina", "Gachas de avena con leche y manzana rallada", "Tostada con crema de cacahuete 100 % y plátano", "Tortilla francesa con pan integral y un kiwi"] },
+    media: { t: "Media mañana", reparto: "5 a 10 %", formula: "Algo pequeño: fruta, lácteo o medio bocadillo",
+      ideas: ["Una pieza de fruta", "Un yogur natural", "Medio bocadillo de queso fresco", "Un puñado de frutos secos naturales", "Palitos de zanahoria", "Un vaso de leche"] },
+    comida: { t: "Comida", reparto: "30 a 35 %", formula: "Medio plato de verdura + un cuarto de proteína + un cuarto de cereal o patata; fruta de postre",
+      ideas: ["Lentejas estofadas con verduras y una mandarina", "Merluza al horno con patata y ensalada", "Arroz integral con pollo y verduras, y una pera", "Garbanzos con espinacas y una naranja", "Pasta integral con atún y tomate, y ensalada", "Alubias blancas con verduras y yogur natural"] },
+    merienda: { t: "Merienda", reparto: "10 a 15 %", formula: "Cereal o fruta + algo de proteína",
+      ideas: ["Bocadillo pequeño de tortilla o de queso fresco", "Yogur natural con fruta troceada", "Fruta y un puñado de frutos secos", "Tostada integral con hummus", "Vaso de leche y tostada integral con aceite", "Batido casero de leche y fruta, sin azúcar"] },
+    cena: { t: "Cena", reparto: "25 a 30 %", formula: "Verdura protagonista + proteína ligera (la que no comiste a mediodía) + poco cereal",
+      ideas: ["Crema de calabaza y tortilla francesa", "Pescado a la plancha con ensalada y pan integral", "Revuelto de champiñones con espárragos y tomate", "Verduras al horno con queso fresco y garbanzos", "Sopa de pescado con verduras", "Ensalada templada de lentejas", "Pollo a la plancha con pisto"] },
+  };
+  const AJUSTES = {
+    p13: { media: "Para los más pequeños: fruta chafada o en trozos pequeños, o leche.", cena: "Que cene pronto y tranquilo; la misma comida que la familia, en trozos que pueda manejar." },
+    p48: { desayuno: "Si le cuesta desayunar temprano, algo pequeño en casa y medio bocadillo en el recreo." },
+    adol: { desayuno: "Si no tiene hambre, al menos un vaso de leche y una fruta, y el bocadillo en el recreo.", cena: "Que no sustituya la cena por picoteo frente a la pantalla." },
+    embarazo: { desayuno: "Si tienes náuseas por la mañana, empieza con algo seco, como pan o tostadas, y come poco y a menudo." },
+    mayor: { cena: "Cena temprano y ligera; un yogur o un vaso de leche antes de dormir puede ayudar a llegar a la proteína del día." },
+    deporte: { desayuno: "Si entrenas por la mañana, desayuna 1 a 2 horas antes y algo más de cereal.", merienda: "Si entrenas por la tarde, que sea tu comida previa: hidratos y algo de proteína." },
+  };
+  H.dia = el => {
+    const pn = uid("persona"), cm = uid("comida");
+    el.innerHTML = cabeza("dia", "¿Qué tomo ahora?", "Elige para quién es y qué comida del día. Verás cómo se compone, ideas concretas, qué beber y en qué fijarte.") +
+      `<div class="herr-cuerpo">
+        ${segmentos(pn, "¿Para quién?", Object.entries(PERSONAS).map(([k, p]) => [k, p.t]), "adulto")}
+        ${segmentos(cm, "¿Qué comida?", Object.entries(COMIDAS_DIA).map(([k, c]) => [k, c.t]), "desayuno")}
+        <div class="salida" aria-live="polite"></div>
+        <p class="nota-herr">Basado en las recomendaciones de la <a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN</a>, la <a href="https://enfamilia.aeped.es/">AEP</a> y los valores de agua de la <a href="https://www.efsa.europa.eu/es/efsajournal/pub/1459">EFSA</a>. El reparto por comidas es orientativo: si te va mejor comer tres veces al día, también vale.</p>
+      </div>`;
+    const pintar = () => {
+      const p = PERSONAS[radio(el, pn)], ck = radio(el, cm), c = COMIDAS_DIA[ck];
+      const ideas = [...c.ideas].sort(() => Math.random() - 0.5).slice(0, 3);
+      const ajuste = (AJUSTES[radio(el, pn)] || {})[ck];
+      el.querySelector(".salida").innerHTML = `<div class="resultados-2">
+          <div class="resultado"><b>${c.t}: cómo se compone</b><span class="grande" style="font-size:1.45rem;line-height:1.2">${c.formula}</span>
+            <p class="suave">Aporta alrededor del ${c.reparto} de lo que se come en el día.</p>
+            ${ajuste ? `<p>${estado("ojo", "Para " + p.t.toLowerCase())} ${ajuste}</p>` : ""}</div>
+          <div class="resultado"><b>Ideas</b><ul class="ideas">${ideas.map(i => `<li>${i}</li>`).join("")}</ul>
+            <button type="button" class="boton secundario pequeno otras">Otras ideas</button></div>
+        </div>
+        <div class="resultados-2" style="margin-top:.9rem">
+          <div class="resultado"><b>Qué beber</b><p>${p.beber}</p><p class="suave">Agua: ${p.agua}</p></div>
+          <div class="resultado"><b>En qué fijarte</b><ul>${p.ojo.map(o => `<li>${o}</li>`).join("")}</ul></div>
+        </div>`;
+      el.querySelector(".otras").addEventListener("click", pintar);
+    };
+    el.addEventListener("change", pintar);
+    pintar();
+  };
+
+  // ---------------------------------------------------------------- Arma tu desayuno
+  const DESAYUNO_PIEZAS = {
+    cereal: { g: "cereal", n: "Cereal integral", o: ["Pan integral", "Copos de avena", "Pan de centeno", "Muesli sin azúcar", "Tortitas de maíz"] },
+    prot: { g: "proteina", n: "Lácteo o proteína", o: ["Leche", "Yogur natural", "Queso fresco", "Huevo", "Kéfir", "Bebida de soja enriquecida"] },
+    fruta: { g: "fruta", n: "Fruta", o: ["Plátano", "Naranja", "Manzana", "Fresas", "Kiwi", "Pera", "Mandarina"] },
+    extra: { g: "verdura", n: "Un toque, si quieres", o: ["Aceite de oliva y tomate", "Aguacate", "Nueces", "Crema de cacahuete 100 %", "Canela"] },
+  };
+  H.desayuno = el => {
+    el.innerHTML = cabeza("desayuno", "Arma tu desayuno", "Una pieza de cada columna y tienes un desayuno equilibrado. Pulsa para otra combinación.") +
+      `<div class="herr-cuerpo"><div class="idea-fiambrera" aria-live="polite"></div>
+        <p><button type="button" class="boton pequeno otra">Otro desayuno</button></p>
+        <p class="nota-herr">Lo que sobra a diario: bollería, galletas, cereales azucarados, cacao con azúcar y zumos. Mejor de vez en cuando.</p></div>`;
+    const pintar = () => {
+      el.querySelector(".idea-fiambrera").innerHTML = Object.values(DESAYUNO_PIEZAS).map(c =>
+        `<div class="g-${c.g}"><b>${c.n}</b><span>${c.o[Math.floor(Math.random() * c.o.length)]}</span></div>`).join("");
+    };
+    el.querySelector(".otra").addEventListener("click", pintar);
+    pintar();
   };
 
   // Arranque

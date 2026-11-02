@@ -1,11 +1,12 @@
 // despensa — cabecera, pie y tema compartidos por todas las páginas.
 (function () {
   const paginas = [
+    { id: "basico", href: "basico.html", texto: "Lo básico", clase: "s-basico", desc: "Qué comer y beber cada día, por persona" },
     { id: "peso", href: "peso.html", texto: "Perder peso", clase: "s-peso", desc: "Sin pasar hambre ni contar calorías" },
     { id: "ninos", href: "ninos.html", texto: "Niños", clase: "s-ninos", desc: "Qué ofrecer y qué evitar según la edad" },
     { id: "entrenar", href: "entrenar.html", texto: "Entrenar", clase: "s-entrenar", desc: "Combustible, proteína y agua" },
     { id: "nutrientes", href: "nutrientes.html", texto: "Nutrientes", clase: "s-nutrientes", desc: "Fibra, hierro, calcio, omega-3, sal y agua" },
-    { id: "menu", href: "menu.html", texto: "Menú y compra", clase: "s-menu", desc: "La semana resuelta y la lista hecha" },
+    { id: "menu", href: "menu.html", texto: "Menú", clase: "s-menu", desc: "Desayuno, comida, merienda y cena de la semana, y la compra" },
     { id: "datos", href: "datos.html", texto: "Datos", clase: "s-datos", desc: "Cómo comemos en España, en cifras" },
     { id: "herramientas", href: "herramientas.html", texto: "Herramientas", clase: "s-herramientas nav-herramientas", desc: "Todas las calculadoras juntas" },
   ];
