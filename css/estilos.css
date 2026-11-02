@@ -868,3 +868,12 @@ h3, .grafico-titulo, .herr-cabeza h3 { font-stretch: 92%; }
 .hoy-falta { grid-column: 1 / -1; font-size: 0.88rem; color: var(--tinta-suave); padding-left: 1.1rem; }
 @media (max-width: 40rem) { .hoy-lista li { grid-template-columns: 1fr; } }
 @media print { .saltos, .panel-modo, #casa, #hoy, section[aria-labelledby="t-hoy"] { display: none; } }
+
+/* Lista de la compra como punto de partida del menú */
+.compra-acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1.4rem; }
+.otros { margin: 1.5rem 0 0; border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
+.otros summary { cursor: pointer; padding: 0.9rem 0; font-weight: 700; }
+.otros summary span { font-weight: 400; color: var(--tinta-suave); }
+.otros-dentro { padding: 0 0 1rem; }
+.otros-dentro .campo { max-width: 22rem; margin-bottom: 1rem; }
+@media print { .compra-acciones, .otros { display: none; } }

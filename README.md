@@ -36,7 +36,7 @@ despensa es divulgativa: no sustituye la consulta con un médico, pediatra o die
 | [Niños](https://serbenda.github.io/despensa/ninos.html) | Reparto de papeles en la mesa, seguridad por edad, raciones, desayunos, fiambrera, el «no me gusta», azúcar, sueño y pantallas, señales para consultar. | Qué puede comer según su edad, raciones con su mano, ideas para la fiambrera, azúcar en terrones |
 | [Entrenar](https://serbenda.github.io/despensa/entrenar.html) | Combustible y proteína según el día, qué comer y cuándo, hidratación, un día de ejemplo, suplementos según la evidencia y déficit energético. | Plan de combustible, calculadora de sudor, proteína por ración |
 | [Nutrientes](https://serbenda.github.io/despensa/nutrientes.html) | Fibra, calcio, hierro, omega-3 y sal; agua; vitamina D, B12, yodo y folato; embarazo, dieta vegetariana y mayores de 65. | Explorador de nutrientes |
-| [Menú y compra](https://serbenda.github.io/despensa/menu.html) | Menú de siete días que cumple las frecuencias de la AESAN, hecho al azar o a partir de lo que tienes en casa; qué cocinar hoy; lista de la compra solo con lo que falta, y temporada. | Generador de menú, lo que tengo en casa, ¿qué cocino hoy?, lista marcable, calendario de temporada |
+| [Menú y compra](https://serbenda.github.io/despensa/menu.html) | Menú de siete días que cumple las frecuencias de la AESAN, hecho al azar o a partir de lo que marcas en la lista de la compra; qué cocinar hoy, y temporada. | Generador de menú, lista de la compra marcable, ¿qué cocino hoy?, calendario de temporada |
 | [Datos](https://serbenda.github.io/despensa/datos.html) | Cómo comemos en España: exceso de peso en adultos y niños, hábitos, renta y cesta de la compra. | Nueve gráficos con tabla y fuente |
 | [Herramientas](https://serbenda.github.io/despensa/herramientas.html) | Todas las calculadoras en una sola página. | Todas |
 
@@ -61,7 +61,7 @@ Todas calculan al momento, en tu propio dispositivo.
 | ¿Cuánto sudas? | Tasa de sudoración, porcentaje de peso perdido, lo que hay que beber por hora para no pasar del 2 % y cuánto reponer (1,25 a 1,5 l por kilo perdido). | ACSM 2016 |
 | Explora los nutrientes | Fibra, calcio, hierro, omega-3 y sal: necesidades, a quién le falta, gráfico por ración frente a la necesidad diaria y consejos. | EFSA, OMS, BEDCA |
 | ¿Mito o realidad? | Doce afirmaciones con explicación y marcador. | AESAN, EFSA, OMS |
-| Menú con lo que tengo en casa | Marcas lo que hay en tu nevera y tu despensa, y el menú elige primero los platos que más lo aprovechan sin saltarse las raciones semanales. Cada plato dice si lo tienes todo o qué falta, «¿Qué cocino hoy?» propone los seis platos más completos y la lista de la compra solo pide lo que falta. | AESAN 2022 |
+| Menú con lo que tienes en casa | En la lista de la compra marcas lo que ya tienes (y, si quieres, otras cosas de casa que el menú no usa) y pulsas «Rehacer el menú con lo marcado»: el menú elige primero los platos que más lo aprovechan sin saltarse las raciones semanales. Cada plato dice si lo tienes todo o qué falta, y «¿Qué cocino hoy?» propone los seis platos más completos. | AESAN 2022 |
 
 La altura y el peso que escribes en una herramienta pasan a las demás de la misma página, y la web los recuerda para que no tengas que repetirlos.
 
