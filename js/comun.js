@@ -1,13 +1,13 @@
 // despensa — cabecera, pie y tema compartidos por todas las páginas.
 (function () {
   const paginas = [
-    { id: "peso", href: "peso.html", texto: "Perder peso", clase: "s-peso" },
-    { id: "ninos", href: "ninos.html", texto: "Niños", clase: "s-ninos" },
-    { id: "entrenar", href: "entrenar.html", texto: "Entrenar", clase: "s-entrenar" },
-    { id: "nutrientes", href: "nutrientes.html", texto: "Nutrientes", clase: "s-nutrientes" },
-    { id: "menu", href: "menu.html", texto: "Menú y compra", clase: "s-menu" },
-    { id: "datos", href: "datos.html", texto: "Datos", clase: "s-datos" },
-    { id: "herramientas", href: "herramientas.html", texto: "Herramientas", clase: "s-herramientas nav-herramientas" },
+    { id: "peso", href: "peso.html", texto: "Perder peso", clase: "s-peso", desc: "Sin pasar hambre ni contar calorías" },
+    { id: "ninos", href: "ninos.html", texto: "Niños", clase: "s-ninos", desc: "Qué ofrecer y qué evitar según la edad" },
+    { id: "entrenar", href: "entrenar.html", texto: "Entrenar", clase: "s-entrenar", desc: "Combustible, proteína y agua" },
+    { id: "nutrientes", href: "nutrientes.html", texto: "Nutrientes", clase: "s-nutrientes", desc: "Fibra, hierro, calcio, omega-3, sal y agua" },
+    { id: "menu", href: "menu.html", texto: "Menú y compra", clase: "s-menu", desc: "La semana resuelta y la lista hecha" },
+    { id: "datos", href: "datos.html", texto: "Datos", clase: "s-datos", desc: "Cómo comemos en España, en cifras" },
+    { id: "herramientas", href: "herramientas.html", texto: "Herramientas", clase: "s-herramientas nav-herramientas", desc: "Todas las calculadoras juntas" },
   ];
 
   const actual = document.body.dataset.pagina || "";
@@ -45,9 +45,51 @@
     <div class="envoltorio">
       <a class="marca" href="./">${tarro}despensa</a>
       <nav class="nav" aria-label="Secciones">${nav}</nav>
+      <button class="menu-boton" type="button" aria-haspopup="dialog" aria-controls="hoja-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Menú</span></button>
       <button class="tema" type="button" aria-label="Cambiar entre modo claro y oscuro"></button>
-    </div>`;
+    </div>
+    <div class="progreso" aria-hidden="true"><i></i></div>`;
   document.body.prepend(cabecera);
+
+  // Hoja de navegación para pantallas estrechas
+  const hoja = document.createElement("dialog");
+  hoja.className = "hoja";
+  hoja.id = "hoja-nav";
+  hoja.setAttribute("aria-label", "Secciones");
+  hoja.innerHTML = `<div class="hoja-dentro">
+      <div class="hoja-cabeza"><a class="marca" href="./">${tarro}despensa</a><button class="cerrar" type="button" aria-label="Cerrar menú">×</button></div>
+      <ul>${paginas.map(p => `<li class="${p.clase.replace(" nav-herramientas", "")}"><a href="${p.href}"${p.id === actual ? ' aria-current="page"' : ""}><strong>${p.texto}</strong><span>${p.desc}</span></a></li>`).join("")}</ul>
+    </div>`;
+  document.body.append(hoja);
+  const abrirHoja = () => { if (hoja.showModal) hoja.showModal(); else hoja.setAttribute("open", ""); };
+  const cerrarHoja = () => { if (hoja.close) hoja.close(); else hoja.removeAttribute("open"); };
+  cabecera.querySelector(".menu-boton").addEventListener("click", abrirHoja);
+  hoja.querySelector(".cerrar").addEventListener("click", cerrarHoja);
+  hoja.addEventListener("click", e => { if (e.target === hoja) cerrarHoja(); });
+
+  // Altura de la cabecera para los elementos fijos
+  const medir = () => document.documentElement.style.setProperty("--alto-cab", cabecera.offsetHeight + "px");
+  medir();
+  window.addEventListener("resize", medir);
+
+  // Progreso de lectura y botón para volver arriba
+  const barra = cabecera.querySelector(".progreso i");
+  const arriba = document.createElement("button");
+  arriba.className = "arriba";
+  arriba.type = "button";
+  arriba.setAttribute("aria-label", "Volver arriba");
+  arriba.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  arriba.addEventListener("click", () => window.scrollTo({ top: 0 }));
+  document.body.append(arriba);
+  let pendiente = false;
+  const alDesplazar = () => {
+    pendiente = false;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (actual !== "inicio" && max > 0) barra.style.width = Math.min(100, scrollY / max * 100) + "%";
+    arriba.classList.toggle("visible", scrollY > innerHeight * 1.5);
+  };
+  window.addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(alDesplazar); } }, { passive: true });
+  alDesplazar();
 
   const botonTema = cabecera.querySelector(".tema");
   function pintarBoton() { botonTema.innerHTML = esOscuro() ? iconoSol : iconoLuna; }
@@ -64,6 +106,7 @@
   pie.innerHTML = `
     <div class="envoltorio">
       <div>
+        <p class="marca-pie">despensa</p>
         <h2>Antes de nada</h2>
         <p>despensa es una guía divulgativa basada en recomendaciones públicas. No sustituye la consulta con tu médico, pediatra o dietista-nutricionista, sobre todo si tienes una enfermedad, estás embarazada o se trata de un bebé.</p>
         <p>© ${new Date().getFullYear()} Bendi · <a href="https://github.com/serbenda/despensa">Código en GitHub</a></p>
