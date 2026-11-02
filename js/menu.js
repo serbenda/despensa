@@ -193,12 +193,18 @@
       }).join("");
   }
 
-  function pintarCompra(casa) {
-    const { porPasillo, total, claves } = listaCompra();
+  function resumenCompra(casa) {
+    const { total, claves } = listaCompra();
     const faltan = claves.filter(k => !casa.has(k)).length;
     $("compra-resumen").innerHTML = faltan
-      ? `Te faltan <strong>${faltan}</strong> de ${total} productos. Marca lo que ya tienes o metes en el carro.`
+      ? `Para este menú te faltan <strong>${faltan}</strong> de ${total} productos. Marca lo que ya tienes en casa y pulsa «Rehacer el menú con lo marcado» para aprovecharlo.`
       : `<strong>Lo tienes todo.</strong> No hace falta ir a comprar para este menú.`;
+  }
+
+  // La lista de la compra: los ingredientes del menú. Marcar = «lo tengo».
+  function pintarCompra(casa) {
+    const { porPasillo } = listaCompra();
+    resumenCompra(casa);
     $("compra").innerHTML = ORDEN_PASILLOS.filter(p => porPasillo[p]).map(pasillo =>
       `<li class="bloque"><p class="grupo">${pasillo}</p><ul>` +
       porPasillo[pasillo].sort((a, b) => (casa.has(a.clave) - casa.has(b.clave)) || a.nombre.localeCompare(b.nombre, "es")).map(it =>
@@ -207,26 +213,27 @@
     ).join("");
   }
 
-  function pintarDespensa(casa) {
-    const filtro = ($("buscar-despensa").value || "").trim().toLowerCase();
-    $("despensa-cuenta").textContent = casa.size
-      ? `Tienes ${casa.size} ${casa.size === 1 ? "producto" : "productos"} marcados.`
-      : "Aún no has marcado nada.";
+  // Más cosas que puedes tener en casa aunque este menú no las use.
+  function pintarOtros(casa) {
+    const enLista = new Set(listaCompra().claves);
+    const filtro = ($("buscar-otros").value || "").trim().toLowerCase();
     const porPasillo = {};
     Object.keys(CATALOGO).sort((a, b) => a.localeCompare(b, "es")).forEach(k => {
-      if (filtro && !k.includes(filtro)) return;
+      if (enLista.has(k) || (filtro && !k.includes(filtro))) return;
       (porPasillo[CATALOGO[k]] ||= []).push(k);
     });
-    const html = ORDEN_PASILLOS.filter(p => porPasillo[p]).map(p =>
-      `<div class="despensa-grupo"><p class="grupo">${p}</p><div class="despensa-chips">${porPasillo[p].map(k =>
-        `<button type="button" data-clave="${k}" aria-pressed="${casa.has(k)}">${mayus(k)}</button>`).join("")}</div></div>`).join("");
-    $("despensa-lista").innerHTML = html || `<p class="suave">No hay nada que se llame «${filtro}». Prueba con otra palabra.</p>`;
+    const marcadosFuera = [...casa].filter(k => !enLista.has(k)).length;
+    $("otros-cuenta").textContent = marcadosFuera ? `(${marcadosFuera} marcados)` : "";
+    $("otros").innerHTML = ORDEN_PASILLOS.filter(p => porPasillo[p]).map(pasillo =>
+      `<li class="bloque"><p class="grupo">${pasillo}</p><ul>` + porPasillo[pasillo].map(k =>
+        `<li><label><input type="checkbox" data-clave="${k}"${casa.has(k) ? " checked" : ""}><span>${mayus(k)}</span></label></li>`).join("") + `</ul></li>`
+    ).join("") || `<li><p class="suave">No hay nada que se llame «${filtro}».</p></li>`;
   }
 
   function pintarHoy(casa) {
     const caja = $("hoy");
     if (!casa.size) {
-      caja.innerHTML = `<p class="vacio">Marca lo que tienes en casa y aquí verás qué platos puedes cocinar ya.</p>`;
+      caja.innerHTML = `<p class="vacio">Marca en la lista de la compra lo que ya tienes y aquí verás qué platos puedes cocinar.</p>`;
       return;
     }
     const todos = PLATOS.map((p, idx) => ({ p, idx, c: cobertura(p, casa) }))
@@ -253,12 +260,12 @@
     $("vegetariano").checked = estado.vegetariano;
     document.querySelectorAll('input[name="modo-menu"]').forEach(r => { r.checked = r.value === estado.modo; });
     $("modo-nota").textContent = estado.modo === "casa"
-      ? (casa.size ? "El menú aprovecha primero lo que tienes, sin saltarse las raciones recomendadas." : "Marca abajo lo que tienes en casa para que el menú lo aproveche.")
+      ? (casa.size ? "El menú aprovecha primero lo que has marcado en la lista de la compra, sin saltarse las raciones recomendadas." : "Marca en la lista de la compra lo que ya tienes en casa para que el menú lo aproveche.")
       : "Platos al azar que cumplen las raciones recomendadas.";
     pintarSemana(casa);
     pintarRecuento();
     pintarCompra(casa);
-    pintarDespensa(casa);
+    pintarOtros(casa);
     pintarHoy(casa);
   }
 
@@ -288,30 +295,19 @@
     const b = e.target.closest(".cambiar");
     if (b) cambiar(Number(b.dataset.hueco));
   });
-  $("compra").addEventListener("change", e => {
-    const c = e.target.dataset.clave;
+  // Marcar en la lista de la compra o en «otras cosas» es lo mismo: «lo tengo».
+  const alMarcar = e => {
+    const c = e.target.dataset && e.target.dataset.clave;
     if (!c) return;
     marcar(c, e.target.checked);
     const casa = tengo();
-    pintarSemana(casa); pintarDespensa(casa); pintarHoy(casa);
-    $("compra-resumen").innerHTML = (() => {
-      const { total, claves } = listaCompra();
-      const faltan = claves.filter(k => !casa.has(k)).length;
-      return faltan ? `Te faltan <strong>${faltan}</strong> de ${total} productos. Marca lo que ya tienes o metes en el carro.` : `<strong>Lo tienes todo.</strong> No hace falta ir a comprar para este menú.`;
-    })();
-  });
-
-  $("despensa-lista").addEventListener("click", e => {
-    const b = e.target.closest("button[data-clave]");
-    if (!b) return;
-    const si = b.getAttribute("aria-pressed") !== "true";
-    marcar(b.dataset.clave, si);
-    b.setAttribute("aria-pressed", si);
-    const casa = tengo();
-    $("despensa-cuenta").textContent = casa.size ? `Tienes ${casa.size} ${casa.size === 1 ? "producto" : "productos"} marcados.` : "Aún no has marcado nada.";
-    pintarSemana(casa); pintarCompra(casa); pintarHoy(casa);
-  });
-  $("buscar-despensa").addEventListener("input", () => pintarDespensa(tengo()));
+    pintarSemana(casa); pintarHoy(casa); resumenCompra(casa);
+    const n = [...casa].filter(k => !new Set(listaCompra().claves).has(k)).length;
+    $("otros-cuenta").textContent = n ? `(${n} marcados)` : "";
+  };
+  $("compra").addEventListener("change", alMarcar);
+  $("otros").addEventListener("change", alMarcar);
+  $("buscar-otros").addEventListener("input", () => pintarOtros(tengo()));
   $("basicos-casa").addEventListener("click", () => {
     const s = tengo();
     BASICOS_CASA.forEach(k => s.add(k));
@@ -319,8 +315,7 @@
     guardar();
     pintar();
   });
-  $("vaciar-despensa").addEventListener("click", () => { estado.marcados = []; guardar(); pintar(); });
-  $("menu-con-lo-que-tengo").addEventListener("click", () => {
+  $("menu-con-lo-marcado").addEventListener("click", () => {
     estado.modo = "casa";
     rehacer();
     document.getElementById("t-semana").scrollIntoView({ block: "start" });

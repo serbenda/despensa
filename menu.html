@@ -30,7 +30,7 @@
       <div class="envoltorio con-esencial">
         <div>
           <h1>El menú de la semana, resuelto</h1>
-          <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN. Hazlo al azar o a partir de lo que ya tienes en casa, y la lista de la compra solo te pedirá lo que falta.</p>
+          <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN. Hazlo al azar o marca en la lista de la compra lo que ya tienes y rehazlo para aprovecharlo.</p>
         </div>
         <aside class="esencial" aria-labelledby="e-t">
           <h2 id="e-t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lo que cumple cada menú</h2>
@@ -46,14 +46,14 @@
 
     <div class="envoltorio" style="padding-block:2rem 4rem">
       <nav class="saltos" aria-label="En esta página">
-        <a href="#t-semana">La semana</a><a href="#casa">Lo que tengo en casa</a><a href="#t-hoy">¿Qué cocino hoy?</a><a href="#t-compra">Lista de la compra</a><a href="#temporada">De temporada</a>
+        <a href="#t-semana">La semana</a><a href="#t-compra">Lista de la compra</a><a href="#t-hoy">¿Qué cocino hoy?</a><a href="#temporada">De temporada</a>
       </nav>
 
       <div class="panel-modo">
         <fieldset class="segmentos">
           <legend>¿Cómo hago el menú?</legend>
           <label><input type="radio" name="modo-menu" value="azar"><span>Al azar</span></label>
-          <label><input type="radio" name="modo-menu" value="casa"><span>Con lo que tengo en casa</span></label>
+          <label><input type="radio" name="modo-menu" value="casa"><span>Con lo que tengo marcado</span></label>
         </fieldset>
         <p class="suave" id="modo-nota" aria-live="polite"></p>
         <div class="controles">
@@ -71,35 +71,29 @@
         <p style="margin-top:1rem;color:var(--tinta-suave)">Cada día, además: al menos tres raciones de verdura, dos o tres de fruta, agua para beber y aceite de oliva para cocinar. Frutos secos naturales, tres puñados o más a la semana. Recomendaciones de la <a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN</a>.</p>
       </section>
 
-      <section id="casa" aria-labelledby="t-casa">
-        <h2 id="t-casa">Lo que tengo en casa</h2>
-        <p class="medida">Marca lo que hay en tu nevera y tu despensa. Con eso, el menú aprovecha primero lo que tienes y la lista de la compra solo te pide lo que falta. Se guarda en este navegador.</p>
-        <div class="herramienta casa-panel">
-          <div class="casa-barra">
-            <div class="campo"><label for="buscar-despensa">Buscar</label>
-              <div class="con-unidad"><input id="buscar-despensa" type="search" placeholder="Ej.: garbanzos" autocomplete="off"></div></div>
-            <div class="casa-acciones">
-              <button class="boton secundario pequeno" type="button" id="basicos-casa">Marcar los básicos de casa</button>
-              <button class="boton secundario pequeno" type="button" id="vaciar-despensa">Vaciar</button>
-            </div>
-          </div>
-          <p class="casa-cuenta" id="despensa-cuenta" aria-live="polite"></p>
-          <div id="despensa-lista" class="despensa-lista"></div>
-          <p class="casa-cta"><button class="boton" type="button" id="menu-con-lo-que-tengo">Hacer el menú con lo que tengo</button></p>
+      <section aria-labelledby="t-compra">
+        <h2 id="t-compra">Lista de la compra</h2>
+        <p class="medida" id="compra-resumen" aria-live="polite"></p>
+        <div class="compra-acciones">
+          <button class="boton" type="button" id="menu-con-lo-marcado">Rehacer el menú con lo marcado</button>
+          <button class="boton secundario" type="button" id="basicos-casa">Marcar lo básico de casa</button>
+          <button class="boton secundario" type="button" id="desmarcar">Desmarcar todo</button>
         </div>
+        <ul class="compra" id="compra"></ul>
+        <details class="otros">
+          <summary>¿Tienes más cosas en casa que este menú no usa? Márcalas aquí <span id="otros-cuenta"></span></summary>
+          <div class="otros-dentro">
+            <div class="campo"><label for="buscar-otros">Buscar</label>
+              <div class="con-unidad"><input id="buscar-otros" type="search" placeholder="Ej.: garbanzos" autocomplete="off"></div></div>
+            <ul class="compra" id="otros"></ul>
+          </div>
+        </details>
       </section>
 
       <section aria-labelledby="t-hoy">
         <h2 id="t-hoy">¿Qué cocino hoy?</h2>
         <p class="medida">Los platos que mejor aprovechan lo que tienes ahora mismo, de más a menos completos.</p>
         <div id="hoy" class="resultado" aria-live="polite"></div>
-      </section>
-
-      <section aria-labelledby="t-compra">
-        <h2 id="t-compra">Lista de la compra</h2>
-        <p class="medida" id="compra-resumen" aria-live="polite"></p>
-        <p><button class="boton secundario" type="button" id="desmarcar">Desmarcar todo</button></p>
-        <ul class="compra" id="compra"></ul>
       </section>
 
       <section aria-labelledby="t-temporada" id="temporada">
