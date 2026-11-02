@@ -646,3 +646,179 @@ th { font-family: var(--fuente-titulo); font-weight: 650; }
   .semana { grid-template-columns: repeat(4, 1fr); }
   .dia, .herramienta, .grafico { break-inside: avoid; }
 }
+
+/* =====================================================================
+   Capa visual: mercado y cocina
+   Titulares estrechos de cartel, azulejo como textura, resumen en forma
+   de ticket de la compra, bandas de color por sección y navegación móvil.
+   ===================================================================== */
+:root {
+  --banda: #1f2c25;
+  --sobre-banda: #f1f3ec;
+  --banda-suave: #b4c0b6;
+  --ticket: #fffef8;
+  --oscurecer: 22%;
+  --sobre-tile: #ffffff;
+  --alto-cab: 64px;
+  --patron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%2322302a' stroke-opacity='.11' stroke-width='1.4'%3E%3Cpath d='M28 0a28 28 0 0 0 28 28M0 28a28 28 0 0 0 28 28M28 56a28 28 0 0 1 28-28M0 28A28 28 0 0 1 28 0'/%3E%3Cpath d='M28 16l12 12-12 12-12-12z'/%3E%3Ccircle cx='28' cy='28' r='4'/%3E%3Ccircle cx='0' cy='0' r='6'/%3E%3Ccircle cx='56' cy='0' r='6'/%3E%3Ccircle cx='0' cy='56' r='6'/%3E%3Ccircle cx='56' cy='56' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  --patron-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23f1f3ec' stroke-opacity='.07' stroke-width='1.4'%3E%3Cpath d='M28 0a28 28 0 0 0 28 28M0 28a28 28 0 0 0 28 28M28 56a28 28 0 0 1 28-28M0 28A28 28 0 0 1 28 0'/%3E%3Cpath d='M28 16l12 12-12 12-12-12z'/%3E%3Ccircle cx='28' cy='28' r='4'/%3E%3Ccircle cx='0' cy='0' r='6'/%3E%3Ccircle cx='56' cy='0' r='6'/%3E%3Ccircle cx='0' cy='56' r='6'/%3E%3Ccircle cx='56' cy='56' r='6'/%3E%3C/g%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --banda: #0d1310; --sobre-banda: #e8ece4; --banda-suave: #9aa79d; --ticket: #1f2721;
+    --oscurecer: 0%; --sobre-tile: #121814; --patron: var(--patron-claro);
+  }
+}
+:root[data-theme="dark"] {
+  --banda: #0d1310; --sobre-banda: #e8ece4; --banda-suave: #9aa79d; --ticket: #1f2721;
+  --oscurecer: 0%; --sobre-tile: #121814; --patron: var(--patron-claro);
+}
+
+/* Tipografía de cartel: Bricolage Grotesque estrecha en los titulares */
+h1 { font-stretch: 78%; font-weight: 800; letter-spacing: -0.028em; line-height: 0.98; }
+h2 { font-stretch: 86%; font-weight: 760; letter-spacing: -0.02em; }
+h3, .grafico-titulo, .herr-cabeza h3 { font-stretch: 92%; }
+.portada h1 { font-size: clamp(3rem, 8vw, 6rem); max-width: 10.5ch; }
+.cabecera-seccion h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); }
+.cifra b, .resultado .grande { font-stretch: 78%; }
+
+/* Cabecera fija y translúcida */
+.cabecera {
+  position: sticky; top: 0; z-index: 30;
+  background: color-mix(in srgb, var(--papel) 86%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
+}
+.cabecera .envoltorio { flex-wrap: nowrap; }
+.progreso { position: absolute; left: 0; bottom: -1px; height: 3px; width: 100%; pointer-events: none; }
+.progreso i { display: block; height: 100%; width: 0; background: var(--seccion); border-radius: 0 3px 3px 0; }
+.menu-boton {
+  display: none; margin-left: auto; align-items: center; gap: 0.45rem; font: inherit; font-weight: 700; cursor: pointer;
+  border: 1.5px solid var(--tinta); background: transparent; color: var(--tinta); border-radius: 999px; padding: 0.4rem 0.95rem;
+}
+.menu-boton svg { width: 18px; height: 18px; }
+
+/* Hoja de navegación móvil */
+.hoja { border: 0; padding: 0; margin: 0 0 0 auto; height: 100%; max-height: 100dvh; width: min(26rem, 100%); background: var(--papel); color: var(--tinta); }
+.hoja::backdrop { background: rgba(10, 16, 13, 0.55); }
+.hoja[open] { animation: hoja-entra 0.22s ease-out; }
+@keyframes hoja-entra { from { transform: translateX(30px); opacity: 0; } }
+.hoja-dentro { padding: 1rem 1.25rem 2rem; display: flex; flex-direction: column; min-height: 100%; }
+.hoja-cabeza .marca { font-size: 1.4rem; }
+.hoja-cabeza { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.hoja-cabeza .cerrar { font: inherit; font-size: 1.6rem; line-height: 1; width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--linea); background: none; color: var(--tinta); cursor: pointer; }
+.hoja ul { list-style: none; padding: 0; margin: 0; }
+.hoja li { margin: 0; border-bottom: 1px solid var(--linea); }
+.hoja ul a { display: grid; grid-template-columns: 0.9rem 1fr; gap: 0.1rem 0.75rem; padding: 0.85rem 0; text-decoration: none; align-items: baseline; }
+.hoja ul a::before { content: ""; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: var(--seccion); grid-row: span 2; transform: translateY(2px); }
+.hoja ul a strong { font-family: var(--fuente-titulo); font-size: 1.3rem; font-stretch: 88%; }
+.hoja ul a span { color: var(--tinta-suave); font-size: 0.92rem; grid-column: 2; }
+.hoja ul a[aria-current="page"] strong { text-decoration: underline; text-decoration-color: var(--seccion); text-decoration-thickness: 3px; text-underline-offset: 4px; }
+
+/* Portada: el plato sobre azulejo, servido al cargar */
+.plato-figura { background: var(--patron) center / 56px, var(--papel-2); border-radius: 32px; padding: clamp(1rem, 3vw, 2rem); }
+.plato-nota { background: var(--papel); border-radius: 0 12px 12px 0; padding: 0.75rem 1rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .plato .trozo { animation: servir 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+  .plato .trozo[data-parte="verdura"] { animation-delay: 0.1s; }
+  .plato .trozo[data-parte="cereal"] { animation-delay: 0.28s; }
+  .plato .trozo[data-parte="proteina"] { animation-delay: 0.46s; }
+  .plato .trozo[data-parte="agua"] { animation-delay: 0.66s; }
+  .plato .trozo[data-parte="aceite"] { animation-delay: 0.8s; }
+}
+@keyframes servir { from { opacity: 0; transform: scale(0.82) rotate(-6deg); } }
+
+/* Objetivos: baldas de color */
+.objetivo {
+  position: relative; overflow: hidden; border: 0; border-radius: 24px; min-height: 20rem; padding: 1.4rem 1.4rem 1.3rem;
+  background: color-mix(in srgb, var(--seccion), #000 var(--oscurecer)); color: var(--sobre-tile);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.objetivo:hover { color: var(--sobre-tile); transform: translateY(-4px); box-shadow: 0 18px 30px -20px rgba(0, 0, 0, 0.6); }
+.objetivo h3 { font-size: 1.75rem; font-stretch: 80%; font-weight: 800; line-height: 1; margin-bottom: 0.6rem; }
+.objetivo p, .objetivo ul { color: inherit; opacity: 0.94; position: relative; }
+.objetivo li::before { background: currentColor; border-radius: 50%; }
+.objetivo .ir { text-decoration-color: currentColor; position: relative; display: inline-flex; gap: 0.4rem; align-items: center; }
+.objetivo .ir::after { content: ""; width: 1.4rem; height: 2px; background: currentColor; transition: width 0.2s; }
+.objetivo:hover .ir::after { width: 2.2rem; }
+.icono-grande { position: absolute; right: -1.2rem; bottom: -1.2rem; width: 8.5rem; height: 8.5rem; opacity: 0.16; pointer-events: none; }
+.icono-grande svg { width: 100%; height: 100%; stroke-width: 1.4; }
+
+/* Banda oscura de datos y pie */
+.banda { background: var(--banda) var(--patron-claro) center / 56px; color: var(--banda-suave); border-top: 0; --seccion: var(--sobre-banda); }
+.banda h2 { color: var(--sobre-banda); }
+.banda .cifras { border-color: rgba(255, 255, 255, 0.14); }
+.banda .cifra { border-color: rgba(255, 255, 255, 0.14); }
+.banda .cifra b { color: var(--sobre-banda); font-size: clamp(3rem, 8vw, 5.2rem); }
+.banda .cifra span { color: var(--banda-suave); }
+.banda a { color: var(--sobre-banda); }
+.pie { background: var(--banda) var(--patron-claro) center / 56px; color: var(--banda-suave); border-top: 0; padding-block: 3rem; --seccion: var(--sobre-banda); }
+.pie h2 { color: var(--sobre-banda); }
+.pie a { color: var(--sobre-banda); text-decoration-color: rgba(255, 255, 255, 0.35); }
+.pie a:hover { color: #fff; }
+.pie .marca-pie { font-family: var(--fuente-titulo); font-weight: 800; font-stretch: 80%; font-size: 2.4rem; color: var(--sobre-banda); line-height: 1; margin: 0 0 0.8rem; letter-spacing: -0.03em; }
+
+/* Héroe de sección: banda teñida con azulejo que se desvanece */
+.cabecera-seccion {
+  --tinte: color-mix(in srgb, var(--seccion) 12%, var(--papel));
+  background: linear-gradient(90deg, var(--tinte) 38%, color-mix(in srgb, var(--tinte) 55%, transparent)), var(--patron) right top / 56px, var(--tinte);
+  padding-block: clamp(2.4rem, 6vw, 4.25rem) clamp(2rem, 5vw, 3.25rem);
+}
+.s-datos .cabecera-seccion, .s-herramientas .cabecera-seccion { --tinte: var(--papel-2); }
+
+/* El resumen de 30 segundos, como un ticket de la compra */
+.esencial {
+  position: relative; background: var(--ticket); border: 0; border-radius: 6px 6px 0 0;
+  padding: 1.3rem 1.4rem 1.5rem; transform: rotate(-0.7deg); margin-bottom: 12px;
+  box-shadow: 0 16px 30px -22px rgba(0, 0, 0, 0.55);
+}
+.esencial::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 12px;
+  background: linear-gradient(-45deg, transparent 8.5px, var(--ticket) 0) 0 0 / 16px 12px repeat-x,
+              linear-gradient(45deg, transparent 8.5px, var(--ticket) 0) 0 0 / 16px 12px repeat-x;
+}
+.esencial h2 { padding-bottom: 0.7rem; margin-bottom: 0.9rem; border-bottom: 1.5px dashed var(--linea); font-stretch: 90%; }
+
+/* Títulos de sección con pestaña de color */
+.contenido > section > h2:first-child::before {
+  content: ""; display: block; width: 2.6rem; height: 6px; border-radius: 3px; background: var(--seccion); margin-bottom: 0.9rem;
+}
+.contenido > section > h2:first-child { scroll-margin-top: calc(var(--alto-cab) + 1rem); }
+.contenido section, .herramienta { scroll-margin-top: calc(var(--alto-cab) + 1.25rem); }
+.indice { top: calc(var(--alto-cab) + 1rem); max-height: calc(100vh - var(--alto-cab) - 2rem); }
+
+/* Herramientas: un poco más de presencia */
+.herramienta { border-top-width: 6px; box-shadow: 0 1px 0 var(--linea); }
+.herr-cabeza .icono, .rejilla-herr .icono { border-radius: 12px; }
+.rejilla-herr a { transition: transform 0.15s ease, background-color 0.15s; }
+.rejilla-herr a:hover { transform: translateY(-2px); outline: 0; background: color-mix(in srgb, var(--seccion) 14%, var(--papel-2)); }
+
+/* Volver arriba */
+.arriba {
+  position: fixed; right: 16px; bottom: 16px; z-index: 25; width: 3rem; height: 3rem; border-radius: 50%;
+  border: 0; background: var(--tinta); color: var(--papel); cursor: pointer; display: grid; place-items: center;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+}
+.arriba.visible { opacity: 1; transform: none; pointer-events: auto; }
+.arriba svg { width: 20px; height: 20px; }
+
+/* Navegación por debajo de 70rem: botón y hoja */
+@media (max-width: 70rem) {
+  .cabecera .nav { display: none; }
+  .menu-boton { display: inline-flex; }
+  .cabecera .tema { margin-left: 0; }
+}
+@media (max-width: 52rem) {
+  .indice { top: var(--alto-cab); margin-top: 0; }
+  .esencial { transform: none; }
+  .objetivo { min-height: 0; }
+  .plato-figura { margin-top: 0.5rem; }
+}
+@media (max-width: 40rem) {
+  .menu-boton span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .menu-boton { padding: 0; width: 2.4rem; height: 2.4rem; justify-content: center; border-color: var(--linea); }
+}
+@media print {
+  .cabecera, .arriba, .progreso, .pie { display: none; }
+  .cabecera-seccion { background: none; }
+  .esencial { transform: none; box-shadow: none; }
+}

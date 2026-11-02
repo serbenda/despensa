@@ -146,7 +146,7 @@
         <div class="presets" role="group" aria-label="Ejemplos"><span>Prueba con:</span>${EJEMPLOS.map((e, i) => `<button type="button" data-i="${i}" aria-pressed="false">${e.n}</button>`).join("")}</div>
         ${segmentos(tp, "¿Es comida o bebida?", [["comida", "Comida, por 100 g"], ["bebida", "Bebida, por 100 ml"]], "comida")}
         <div class="campos">
-          ${NUTR.map(([k, t], i) => campo(ids[i], t + (k === "saturadas" ? ", de las cuales" : ""), "g", 'min="0" max="100" step="0.1" inputmode="decimal"')).join("")}
+          ${NUTR.map(([k, t], i) => campo(ids[i], t, "g", 'min="0" max="100" step="0.1" inputmode="decimal"')).join("")}
           ${campo(rac, "Ración, opcional", "g o ml", 'min="1" max="2000" step="1" inputmode="decimal"', "Lo que te vas a tomar de una vez.")}
         </div>
         <div aria-live="polite"><div class="semaforo"></div><div class="resultado veredicto"></div></div>
@@ -184,7 +184,9 @@
       let titulo, cuerpo;
       if (rojos.length) {
         titulo = "Para de vez en cuando";
-        cuerpo = `Tiene mucha ${rojos.map(x => x.t.toLowerCase()).join(" y ").replace("azúcares", "azúcar").replace("grasas", "grasa").replace("saturadas", "grasa saturada")}. Busca una versión con menos o tómalo en ocasiones, no a diario.`;
+        const mucho = { grasas: "mucha grasa", saturadas: "mucha grasa saturada", azucares: "mucho azúcar", sal: "mucha sal" };
+        const lista = rojos.map(x => mucho[x.k]);
+        cuerpo = `Tiene ${lista.length > 1 ? lista.slice(0, -1).join(", ") + " y " + lista[lista.length - 1] : lista[0]}. Busca una versión con menos o tómalo en ocasiones, no a diario.`;
       } else if (ambar.length >= 1) {
         titulo = "Bien, con algún valor medio";
         cuerpo = `Nada se dispara, pero hay ${ambar.length === 1 ? "un valor" : "varios valores"} en ámbar. Compara con otras marcas: a menudo hay una mejor en el mismo estante.`;
