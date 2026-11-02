@@ -7,7 +7,7 @@ const PASILLOS = {
   "Pescadería": ["merluza", "salmón", "sardinas", "bacalao", "lubina", "dorada", "gambas", "calamares", "mejillones", "caballa"],
   "Carnicería": ["pechuga de pollo", "muslos de pollo", "pavo", "conejo", "ternera magra", "carne picada de ternera", "lomo de cerdo"],
   "Huevos y lácteos": ["huevos", "queso fresco", "queso rallado", "mozzarella", "yogur natural", "requesón", "tofu firme"],
-  "Despensa": ["lentejas", "garbanzos", "alubias blancas", "alubias rojas", "lentejas rojas", "arroz integral", "pasta integral", "fideos integrales", "cuscús", "quinoa", "tomate triturado", "atún al natural", "caldo de verduras", "leche de coco", "nueces", "pimentón", "comino", "curry", "orégano", "tahini"],
+  "Despensa": ["lentejas", "garbanzos", "alubias blancas", "alubias rojas", "lentejas rojas", "arroz integral", "pasta integral", "fideos integrales", "cuscús", "quinoa", "tomate triturado", "atún al natural", "caldo de verduras", "leche de coco", "nueces", "pimentón", "comino", "curry", "orégano", "tahini", "crema de cacahuete"],
   "Pan y cereales": ["pan integral", "tortillas de trigo integrales", "masa de pizza integral", "pan de hamburguesa integral"],
   "Congelados": ["guisantes", "maíz dulce", "verdura para wok"],
 };
@@ -83,4 +83,32 @@ const BASICOS = [
   ["Yogur natural", "Huevos y lácteos"],
   ["Aceite de oliva virgen extra", "Despensa"],
   ["Frutos secos naturales", "Despensa"],
+];
+
+// Desayunos: cereal integral + lácteo o proteína + fruta.
+const DESAYUNOS = [
+  { n: "Tostada integral con tomate y aceite, y leche o café con leche", i: ["pan integral", "tomate", "aceite de oliva virgen extra", "leche"] },
+  { n: "Copos de avena con yogur natural, fruta y nueces", i: ["copos de avena", "yogur natural", "fruta de temporada variada", "nueces"] },
+  { n: "Tostada integral con aguacate y huevo, y una fruta", i: ["pan integral", "aguacate", "huevos", "fruta de temporada variada"] },
+  { n: "Yogur natural con fruta troceada y frutos secos", i: ["yogur natural", "fruta de temporada variada", "frutos secos naturales"] },
+  { n: "Tostada integral con queso fresco y tomate, y leche", i: ["pan integral", "queso fresco", "tomate", "leche"] },
+  { n: "Gachas de avena con leche y plátano", i: ["copos de avena", "leche", "fruta de temporada variada"] },
+  { n: "Tostada con crema de cacahuete 100 % y fruta", i: ["pan integral", "crema de cacahuete", "fruta de temporada variada"] },
+  { n: "Tortilla francesa con pan integral y una mandarina", i: ["huevos", "pan integral", "fruta de temporada variada"] },
+  { n: "Tostada integral con aguacate y tomate, y leche", i: ["pan integral", "aguacate", "tomate", "leche"] },
+  { n: "Requesón con fruta y nueces, y una tostada integral", i: ["requesón", "fruta de temporada variada", "nueces", "pan integral"] },
+  { n: "Tostada integral con hummus y una fruta", i: ["pan integral", "garbanzos", "tahini", "limón", "fruta de temporada variada"] },
+  { n: "Leche con copos de avena, nueces y fruta", i: ["leche", "copos de avena", "nueces", "fruta de temporada variada"] },
+];
+
+// Meriendas y media mañana: pequeñas, con algo de proteína o fibra.
+const MERIENDAS = [
+  { n: "Fruta y un puñado de frutos secos", i: ["fruta de temporada variada", "frutos secos naturales"] },
+  { n: "Bocadillo pequeño de queso fresco y tomate", i: ["pan integral", "queso fresco", "tomate"] },
+  { n: "Yogur natural con fruta", i: ["yogur natural", "fruta de temporada variada"] },
+  { n: "Palitos de zanahoria y pepino con hummus", i: ["zanahoria", "pepino", "garbanzos", "tahini", "limón"] },
+  { n: "Vaso de leche y tostada integral con aceite", i: ["leche", "pan integral", "aceite de oliva virgen extra"] },
+  { n: "Bocadillo pequeño de tortilla", i: ["pan integral", "huevos"] },
+  { n: "Batido casero de leche y fruta, sin azúcar", i: ["leche", "fruta de temporada variada"] },
+  { n: "Tostada integral con atún y tomate", i: ["pan integral", "atún al natural", "tomate"] },
 ];

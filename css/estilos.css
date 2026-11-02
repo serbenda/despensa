@@ -923,3 +923,44 @@ h3, .grafico-titulo, .herr-cabeza h3 { font-stretch: 92%; }
   .semana-pista { display: block; }
 }
 .semana-pista { display: none; font-size: 0.88rem; color: var(--tinta-suave); margin: -0.6rem 0 0.6rem; }
+.dia dd.ligera::before { background: transparent; border: 2px solid var(--tinta-suave); width: 0.5rem; height: 0.5rem; }
+.dia dd.ligera .plato-nombre { font-weight: 400; }
+.dia dt { margin-top: 0.15rem; }
+.ideas { padding-left: 1.1rem; margin: 0.5rem 0 0.9rem; }
+.ideas li { margin-bottom: 0.4rem; }
+
+/* Lo básico */
+:root { --base: #3c6e5e; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --base: #86c4ad; } }
+:root[data-theme="dark"] { --base: #86c4ad; }
+.s-basico { --seccion: var(--base); }
+.g-azul { --g: var(--azulejo); }
+.g-lacteo { --g: var(--linea); }
+.g-mover { --g: var(--proteina); }
+.g-dormir { --g: var(--mineral); }
+.necesidades { list-style: none; padding: 0; margin: 1.25rem 0 0.75rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.75rem; }
+.necesidades li { margin: 0; background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 0.95rem 1rem 1rem; border-top: 6px solid var(--g, var(--seccion)); }
+.necesidades b { display: block; font-family: var(--fuente-titulo); font-stretch: 80%; font-weight: 800; font-size: 2.1rem; line-height: 1; letter-spacing: -0.02em; }
+.necesidades strong { display: block; margin: 0.35rem 0 0.3rem; font-size: 1rem; }
+.necesidades span { display: block; color: var(--tinta-suave); font-size: 0.92rem; line-height: 1.45; }
+.reparto-dia { display: flex; gap: 3px; margin: 1.25rem 0 1.5rem; }
+.reparto-dia > div { flex: var(--w) 1 0; min-width: 0; }
+.reparto-dia i { display: block; height: 18px; border-radius: 4px; background: var(--g); margin-bottom: 0.45rem; }
+.reparto-dia b { display: block; font-size: 0.88rem; line-height: 1.2; }
+.reparto-dia span { display: block; font-size: 0.82rem; color: var(--tinta-suave); }
+@media (max-width: 40rem) {
+  .reparto-dia { flex-direction: column; gap: 0.5rem; }
+  .reparto-dia > div { display: grid; grid-template-columns: calc(var(--w) * 1.6%) auto 1fr; gap: 0.6rem; align-items: center; }
+  .reparto-dia i { margin: 0; width: 100%; min-width: 1.2rem; }
+  .reparto-dia span { text-align: right; }
+}
+.bebidas { margin-top: 1rem; }
+.pares.dos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 40rem) {
+  .pares.dos { grid-template-columns: 1fr; }
+  .necesidades { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  .necesidades li { padding: 0.75rem 0.75rem 0.8rem; }
+  .necesidades b { font-size: 1.6rem; }
+  .necesidades strong { font-size: 0.92rem; }
+  .necesidades span { font-size: 0.84rem; }
+}

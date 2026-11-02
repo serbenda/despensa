@@ -32,11 +32,12 @@ despensa es divulgativa: no sustituye la consulta con un médico, pediatra o die
 | Página | Qué resuelve | Herramientas |
 | --- | --- | --- |
 | [Portada](https://serbenda.github.io/despensa/) | El método del plato y la entrada por objetivos: perder peso, niños, entrenar u organizar la semana. Las seis claves con más respaldo científico. | Plato interactivo |
+| [Lo básico](https://serbenda.github.io/despensa/basico.html) | Lo que el cuerpo necesita cada día (comer, beber, moverse y dormir), lo que sobra, cómo repartir el día en cinco comidas, desayunos equilibrados por edades, cenas que completan el día y qué beber según la edad. | ¿Qué tomo ahora?, arma tu desayuno |
 | [Perder peso](https://serbenda.github.io/despensa/peso.html) | Punto de partida, cambios sostenibles, raciones, hambre real, etiquetas, ultraprocesados, mitos y cuándo pedir ayuda. | Cintura e IMC, pequeños cambios, raciones con la mano, escala del hambre, semáforo de la etiqueta, mito o realidad |
 | [Niños](https://serbenda.github.io/despensa/ninos.html) | Reparto de papeles en la mesa, seguridad por edad, raciones, desayunos, fiambrera, el «no me gusta», azúcar, sueño y pantallas, señales para consultar. | Qué puede comer según su edad, raciones con su mano, ideas para la fiambrera, azúcar en terrones |
 | [Entrenar](https://serbenda.github.io/despensa/entrenar.html) | Combustible y proteína según el día, qué comer y cuándo, hidratación, un día de ejemplo, suplementos según la evidencia y déficit energético. | Plan de combustible, calculadora de sudor, proteína por ración |
 | [Nutrientes](https://serbenda.github.io/despensa/nutrientes.html) | Fibra, calcio, hierro, omega-3 y sal; agua; vitamina D, B12, yodo y folato; embarazo, dieta vegetariana y mayores de 65. | Explorador de nutrientes |
-| [Menú y compra](https://serbenda.github.io/despensa/menu.html) | En tres pasos: el menú de la semana, la lista de la compra donde marcas lo que ya tienes y qué cocinar hoy. Cada menú cumple las raciones de la AESAN. | Menú semanal, lista de la compra marcable, ajustar el menú a lo que tengo, ¿qué cocino hoy?, calendario de temporada |
+| [Menú](https://serbenda.github.io/despensa/menu.html) | Desayuno, comida, merienda y cena para siete días, en tres pasos: el menú, la lista de la compra donde marcas lo que ya tienes y qué cocinar hoy. Cada menú cumple las raciones de la AESAN, con los huevos contados en todas las comidas. | Menú semanal, lista de la compra marcable, ajustar el menú a lo que tengo, ¿qué cocino hoy?, calendario de temporada |
 | [Datos](https://serbenda.github.io/despensa/datos.html) | Cómo comemos en España: exceso de peso en adultos y niños, hábitos, renta y cesta de la compra. | Nueve gráficos con tabla y fuente |
 | [Herramientas](https://serbenda.github.io/despensa/herramientas.html) | Todas las calculadoras en una sola página. | Todas |
 
@@ -51,6 +52,8 @@ Todas calculan al momento, en tu propio dispositivo.
 
 | Herramienta | Qué calcula | Base |
 | --- | --- | --- |
+| ¿Qué tomo ahora? | Para ocho perfiles (de 1 a 3 años hasta mayores de 65, embarazo y deportistas) y cinco momentos del día: cómo se compone la comida, ideas concretas, qué beber, cuánta agua y en qué fijarse. | AESAN, AEP, EFSA |
+| Arma tu desayuno | Combinaciones de cereal integral, lácteo o proteína, fruta y un toque opcional. | AESAN |
 | ¿Cómo está tu cintura? | Cintura entre altura con zonas de riesgo (menos de 0,5 sin riesgo añadido; 0,5 a 0,59 aumentado; 0,6 o más alto), perímetro de cintura por sexo e IMC con su categoría, rango de peso normal y lo que supone perder del 5 al 10 %. | NICE NG246, OMS |
 | Pequeños cambios | Suma de calorías, azúcar y sal de los cambios elegidos y techo teórico de pérdida de peso en un año: 10 kcal diarias equivalen a unos 450 g a largo plazo, la mitad el primer año. | Modelo dinámico de Kevin Hall (NIH) |
 | Raciones con la mano | Palmas de proteína, manos en cuenco de cereal, puños de verdura y pulgares de grasa por comida para mujer, hombre, niño o deportista. | Precision Nutrition, plato saludable |

@@ -1,4 +1,5 @@
-// despensa — menú semanal en tres pasos: el menú, la lista de la compra y qué cocinar hoy.
+// despensa — menú semanal en tres pasos: el menú (desayuno, comida, merienda y cena),
+// la lista de la compra y qué cocinar hoy.
 // Lo que marcas en la lista de la compra significa «lo tengo en casa». Si hay algo
 // marcado, cualquier menú nuevo lo aprovecha primero, sin saltarse las raciones de la AESAN.
 (function () {
@@ -44,6 +45,18 @@
 
   const tieneCarneOPescado = p =>
     p.i.some(x => PASILLO_DE[x] === "Pescadería" || PASILLO_DE[x] === "Carnicería" || x === "atún al natural");
+  const tieneHuevo = p => p.i.includes("huevos");
+  const MAX_HUEVOS = 4; // AESAN: hasta 4 huevos a la semana, contando todas las comidas
+
+  // Cuántos platos con huevo hay en total en la semana, menos los huecos indicados.
+  function huevosEnSemana(e, sin) {
+    sin = sin || {};
+    let n = 0;
+    e.menu.forEach((i, h) => { if (sin.menu !== h && tieneHuevo(PLATOS[i])) n++; });
+    (e.desayunos || []).forEach((i, h) => { if (sin.d !== h && tieneHuevo(DESAYUNOS[i])) n++; });
+    (e.meriendas || []).forEach((i, h) => { if (sin.m !== h && tieneHuevo(MERIENDAS[i])) n++; });
+    return n;
+  }
 
   function candidatos(grupo, vegetariano) {
     return PLATOS.map((p, idx) => ({ p, idx }))
@@ -110,33 +123,63 @@
       : ["legumbre", "pescado", "legumbre", "huevo", "carne", "pescado", "legumbre", "huevo", "legumbre", "carne", "verdura", "pescado", "carne", "huevo"];
   }
 
-  function generar(vegetariano, marcados, menuAnterior) {
+  // Elige 7 desayunos o meriendas: sin repetir si se puede, sin carne ni pescado en el
+  // menú vegetariano y sin pasarse de huevos.
+  function elegirExtras(lista, vegetariano, casa, compra, azar, anterior, huevosLibres) {
+    const elegidos = [];
+    let libres = huevosLibres;
+    for (let k = 0; k < 7; k++) {
+      let opciones = lista.map((p, idx) => ({ p, idx }))
+        .filter(o => !(vegetariano && tieneCarneOPescado(o.p)) && !(libres <= 0 && tieneHuevo(o.p)));
+      const sinRepetir = opciones.filter(o => !elegidos.includes(o.idx));
+      if (sinRepetir.length) opciones = sinRepetir;
+      const o = opciones.map(o => ({ o, s: puntuar(o.p, casa, compra, azar, anterior, o.idx) })).sort((a, b) => b.s - a.s)[0].o;
+      if (tieneHuevo(o.p)) libres--;
+      o.p.i.forEach(x => compra.add(x));
+      elegidos.push(o.idx);
+    }
+    return { elegidos, libres };
+  }
+
+  function generar(vegetariano, marcados, anteriorEstado) {
     const casa = new Set(marcados);
-    const anterior = new Set(menuAnterior || []);
+    const prev = anteriorEstado || {};
+    const anterior = new Set(prev.menu || []);
     const azar = casa.size ? 0.15 : 1;
     const huecos = repartirGrupos(vegetariano);
     const usados = new Set();
     const compra = new Set();
     let rojas = 0;
+    // Los huecos del grupo huevo ya gastan su cupo; el resto de platos con huevo, del sobrante.
+    let huevosLibres = MAX_HUEVOS - huecos.filter(g => g === "huevo").length;
     const menu = new Array(14);
     barajar(huecos.map((g, i) => i)).forEach(i => {
       const g = huecos[i];
       let opciones = candidatos(g, vegetariano).filter(o => !usados.has(o.idx));
       // Carne roja o de cerdo: como mucho una vez por semana.
       if (g === "carne" && rojas >= 1) opciones = opciones.filter(o => o.p.blanca);
+      if (g !== "huevo" && huevosLibres <= 0) opciones = opciones.filter(o => !tieneHuevo(o.p));
       const elegido = opciones
         .map(o => ({ o, s: puntuar(o.p, casa, compra, azar, anterior, o.idx) }))
         .sort((a, b) => b.s - a.s)[0].o;
       if (g === "carne" && !elegido.p.blanca) rojas++;
+      if (g !== "huevo" && tieneHuevo(elegido.p)) huevosLibres--;
       usados.add(elegido.idx);
       elegido.p.i.forEach(x => compra.add(x));
       menu[i] = elegido.idx;
     });
-    return { vegetariano, menu, marcados: [...casa] };
+    const d = elegirExtras(DESAYUNOS, vegetariano, casa, compra, azar, new Set(prev.desayunos || []), huevosLibres);
+    const m = elegirExtras(MERIENDAS, vegetariano, casa, compra, azar, new Set(prev.meriendas || []), d.libres);
+    return { vegetariano, menu, desayunos: d.elegidos, meriendas: m.elegidos, marcados: [...casa] };
   }
 
   // Comprueba que un menú guardado sigue cumpliendo todas las reglas.
-  function cumpleReglas(menu, vegetariano) {
+  function cumpleReglas(e) {
+    const menu = e.menu, vegetariano = !!e.vegetariano;
+    const extrasOk = (arr, lista) => Array.isArray(arr) && arr.length === 7 && arr.every(i => Number.isInteger(i) && lista[i]) &&
+      !(vegetariano && arr.some(i => tieneCarneOPescado(lista[i])));
+    if (!extrasOk(e.desayunos, DESAYUNOS) || !extrasOk(e.meriendas, MERIENDAS)) return false;
+    if (huevosEnSemana(e) > MAX_HUEVOS) return false;
     const g = menu.map(i => PLATOS[i].g);
     const n = k => g.filter(x => x === k).length;
     if (vegetariano && menu.some(i => tieneCarneOPescado(PLATOS[i]))) return false;
@@ -156,6 +199,9 @@
     if (actual.g === "carne" && (actual.blanca ? rojasEnMenu >= 1 : rojasEnMenu > 1)) {
       opciones = opciones.filter(o => o.p.blanca);
     }
+    if (actual.g !== "huevo" && huevosEnSemana(estado, { menu: hueco }) >= MAX_HUEVOS) {
+      opciones = opciones.filter(o => !tieneHuevo(o.p));
+    }
     if (!opciones.length) return;
     const casa = tengo();
     const compra = new Set();
@@ -171,10 +217,28 @@
     if (boton) boton.focus();
   }
 
+  function cambiarExtra(tipo, h) {
+    const lista = tipo === "d" ? DESAYUNOS : MERIENDAS;
+    const arr = tipo === "d" ? estado.desayunos : estado.meriendas;
+    const sinHueco = tipo === "d" ? { d: h } : { m: h };
+    const sinHuevo = huevosEnSemana(estado, sinHueco) >= MAX_HUEVOS;
+    let opciones = lista.map((p, idx) => ({ p, idx }))
+      .filter(o => o.idx !== arr[h] && !(estado.vegetariano && tieneCarneOPescado(o.p)) && !(sinHuevo && tieneHuevo(o.p)));
+    const nuevos = opciones.filter(o => !arr.includes(o.idx));
+    if (nuevos.length) opciones = nuevos;
+    if (!opciones.length) return;
+    arr[h] = opciones[Math.floor(Math.random() * opciones.length)].idx;
+    guardar();
+    pintar();
+    const boton = document.querySelector(`[data-extra="${tipo}${h}"]`);
+    if (boton) boton.focus();
+  }
+
   function listaCompra() {
     const items = new Map();
-    estado.menu.forEach(i => PLATOS[i].i.forEach(x => {
-      if (!items.has(x)) items.set(x, { nombre: mayus(x), pasillo: PASILLO_DE[x] });
+    const platos = [...estado.menu.map(i => PLATOS[i]), ...estado.desayunos.map(i => DESAYUNOS[i]), ...estado.meriendas.map(i => MERIENDAS[i])];
+    platos.forEach(p => p.i.forEach(x => {
+      if (!items.has(x)) items.set(x, { nombre: mayus(x), pasillo: CATALOGO[x] });
     }));
     BASICOS.forEach(([nombre, pasillo]) => {
       const k = nombre.toLowerCase();
@@ -192,16 +256,19 @@
   };
 
   function pintarSemana(casa) {
-    $("semana").innerHTML = DIAS.map((dia, d) => {
-      const fila = [0, 1].map(m => {
-        const hueco = d * 2 + m;
-        const p = PLATOS[estado.menu[hueco]];
-        return `<dt>${m === 0 ? "Comida" : "Cena"}</dt>
-          <dd class="g-${p.g}"><span><span class="sr">${NOMBRE_GRUPO[p.g]}: </span><span class="plato-nombre">${p.n}</span>
-            <button type="button" class="cambiar" data-hueco="${hueco}" aria-label="Cambiar ${p.n}">cambiar</button>
+    const fila = (etiqueta, p, boton, clase) => `<dt>${etiqueta}</dt>
+          <dd class="${clase}"><span><span class="plato-nombre">${p.n}</span>
+            ${boton}
             ${casa.size ? etiquetaCobertura(cobertura(p, casa)) : ""}</span></dd>`;
-      }).join("");
-      return `<article class="dia"><h3>${dia}</h3><dl>${fila}</dl></article>`;
+    $("semana").innerHTML = DIAS.map((dia, d) => {
+      const comida = PLATOS[estado.menu[d * 2]], cena = PLATOS[estado.menu[d * 2 + 1]];
+      const des = DESAYUNOS[estado.desayunos[d]], mer = MERIENDAS[estado.meriendas[d]];
+      return `<article class="dia"><h3>${dia}</h3><dl>
+        ${fila("Desayuno", des, `<button type="button" class="cambiar" data-extra="d${d}" aria-label="Cambiar desayuno del ${dia.toLowerCase()}">cambiar</button>`, "ligera")}
+        ${fila("Comida", comida, `<button type="button" class="cambiar" data-hueco="${d * 2}" aria-label="Cambiar ${comida.n}">cambiar</button>`, "g-" + comida.g)}
+        ${fila("Merienda", mer, `<button type="button" class="cambiar" data-extra="m${d}" aria-label="Cambiar merienda del ${dia.toLowerCase()}">cambiar</button>`, "ligera")}
+        ${fila("Cena", cena, `<button type="button" class="cambiar" data-hueco="${d * 2 + 1}" aria-label="Cambiar ${cena.n}">cambiar</button>`, "g-" + cena.g)}
+      </dl></article>`;
     }).join("");
     $("nota-menu").innerHTML = casa.size
       ? `Este menú aprovecha primero las <strong>${casa.size}</strong> cosas que has marcado como «lo tengo» en la lista de la compra.`
@@ -319,13 +386,13 @@
   const veg = !!estado.vegetariano;
   const valido = Array.isArray(estado.menu) && estado.menu.length === 14 &&
     estado.menu.every(i => Number.isInteger(i) && PLATOS[i]) && new Set(estado.menu).size === 14 &&
-    cumpleReglas(estado.menu, veg);
+    cumpleReglas({ ...estado, vegetariano: veg });
   if (!valido) estado = generar(veg, previos);
-  estado = { vegetariano: veg, menu: estado.menu, marcados: previos };
+  estado = { vegetariano: veg, menu: estado.menu, desayunos: estado.desayunos, meriendas: estado.meriendas, marcados: previos };
   guardar();
   pintar();
 
-  const rehacer = () => { estado = generar(estado.vegetariano, estado.marcados, estado.menu); guardar(); pintar(); };
+  const rehacer = () => { estado = generar(estado.vegetariano, estado.marcados, estado); guardar(); pintar(); };
 
   $("nuevo").addEventListener("click", rehacer);
   $("vegetariano").addEventListener("change", e => { estado.vegetariano = e.target.checked; rehacer(); });
@@ -333,7 +400,9 @@
   $("desmarcar").addEventListener("click", () => { estado.marcados = []; guardar(); pintar(); });
   $("semana").addEventListener("click", e => {
     const b = e.target.closest(".cambiar");
-    if (b) cambiar(Number(b.dataset.hueco));
+    if (!b) return;
+    if (b.dataset.extra) cambiarExtra(b.dataset.extra[0], Number(b.dataset.extra.slice(1)));
+    else cambiar(Number(b.dataset.hueco));
   });
 
   // Marcar en la lista o en «otras cosas» es lo mismo: «lo tengo».
