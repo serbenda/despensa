@@ -30,7 +30,7 @@
       <div class="envoltorio con-esencial">
         <div>
           <h1>El menú de la semana, resuelto</h1>
-          <p class="entradilla">Comidas y cenas para siete días que cumplen las frecuencias recomendadas por la AESAN. Hazlo al azar o marca en la lista de la compra lo que ya tienes y rehazlo para aprovecharlo.</p>
+          <p class="entradilla">En tres pasos: mira el menú de la semana, marca en la lista de la compra lo que ya tienes en casa y deja que el menú se ajuste a ello. Cada menú cumple las raciones recomendadas por la AESAN.</p>
         </div>
         <aside class="esencial" aria-labelledby="e-t">
           <h2 id="e-t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lo que cumple cada menú</h2>
@@ -44,45 +44,53 @@
       </div>
     </header>
 
-    <div class="envoltorio" style="padding-block:2rem 4rem">
-      <nav class="saltos" aria-label="En esta página">
-        <a href="#t-semana">La semana</a><a href="#t-compra">Lista de la compra</a><a href="#t-hoy">¿Qué cocino hoy?</a><a href="#temporada">De temporada</a>
+    <div class="envoltorio menu-pasos">
+      <nav class="pasos" aria-label="Pasos">
+        <a href="#paso-menu"><b>1</b>Tu menú</a>
+        <a href="#paso-compra"><b>2</b>La compra</a>
+        <a href="#paso-hoy"><b>3</b>¿Qué cocino hoy?</a>
       </nav>
 
-      <div class="panel-modo">
-        <fieldset class="segmentos">
-          <legend>¿Cómo hago el menú?</legend>
-          <label><input type="radio" name="modo-menu" value="azar"><span>Al azar</span></label>
-          <label><input type="radio" name="modo-menu" value="casa"><span>Con lo que tengo marcado</span></label>
-        </fieldset>
-        <p class="suave" id="modo-nota" aria-live="polite"></p>
-        <div class="controles">
-          <button class="boton" type="button" id="nuevo">Hacer otro menú</button>
-          <button class="boton secundario" type="button" id="imprimir">Imprimir</button>
-          <label><input type="checkbox" id="vegetariano"> Sin carne ni pescado</label>
+      <section class="paso" id="paso-menu" aria-labelledby="t-semana">
+        <header class="paso-cabeza">
+          <span class="paso-num" aria-hidden="true">1</span>
+          <div><h2 id="t-semana">Tu menú de la semana</h2><p id="nota-menu" aria-live="polite"></p></div>
+        </header>
+        <div class="barra-menu">
+          <button class="boton" type="button" id="nuevo">Otro menú</button>
+          <label class="interruptor"><input type="checkbox" id="vegetariano"> Sin carne ni pescado</label>
+          <button class="boton secundario pequeno" type="button" id="imprimir">Imprimir</button>
         </div>
-      </div>
-
-      <section aria-labelledby="t-semana">
-        <h2 id="t-semana" style="margin-top:2rem">Esta semana</h2>
+        <p class="semana-pista">Desliza para ver todos los días.</p>
         <div class="semana" id="semana" aria-live="polite"></div>
-        <h3>Cómo queda la semana</h3>
-        <ul class="recuento" id="recuento" aria-label="Recuento de la semana"></ul>
-        <p style="margin-top:1rem;color:var(--tinta-suave)">Cada día, además: al menos tres raciones de verdura, dos o tres de fruta, agua para beber y aceite de oliva para cocinar. Frutos secos naturales, tres puñados o más a la semana. Recomendaciones de la <a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN</a>.</p>
+        <details class="recuento-det">
+          <summary id="recuento-resumen"></summary>
+          <ul class="recuento" id="recuento" aria-label="Recuento de la semana"></ul>
+          <p class="suave">Cada día, además: al menos tres raciones de verdura, dos o tres de fruta, agua para beber y aceite de oliva para cocinar. Frutos secos naturales, tres puñados o más a la semana. Recomendaciones de la <a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN</a>.</p>
+        </details>
       </section>
 
-      <section aria-labelledby="t-compra">
-        <h2 id="t-compra">Lista de la compra</h2>
-        <p class="medida" id="compra-resumen" aria-live="polite"></p>
-        <div class="compra-acciones">
-          <button class="boton" type="button" id="menu-con-lo-marcado">Rehacer el menú con lo marcado</button>
-          <button class="boton secundario" type="button" id="basicos-casa">Marcar lo básico de casa</button>
-          <button class="boton secundario" type="button" id="desmarcar">Desmarcar todo</button>
+      <section class="paso" id="paso-compra" aria-labelledby="t-compra">
+        <header class="paso-cabeza">
+          <span class="paso-num" aria-hidden="true">2</span>
+          <div><h2 id="t-compra">Tu lista de la compra</h2><p>Marca lo que ya tienes en casa. Lo que quede sin marcar es lo que hay que comprar.</p></div>
+        </header>
+        <div class="compra-cabeza">
+          <div class="compra-contador" id="compra-contador" aria-live="polite"></div>
+          <div class="compra-ajustar">
+            <button class="boton" type="button" id="ajustar">Ajustar el menú a lo que tengo</button>
+            <small id="ajustar-ayuda" aria-live="polite"></small>
+          </div>
+        </div>
+        <div class="compra-secundarios">
+          <button class="boton secundario pequeno" type="button" id="basicos-casa">Marcar lo básico de casa</button>
+          <button class="boton secundario pequeno" type="button" id="desmarcar">Desmarcar todo</button>
         </div>
         <ul class="compra" id="compra"></ul>
         <details class="otros">
-          <summary>¿Tienes más cosas en casa que este menú no usa? Márcalas aquí <span id="otros-cuenta"></span></summary>
+          <summary>Otras cosas que tienes en casa <span id="otros-cuenta"></span></summary>
           <div class="otros-dentro">
+            <p class="suave">Marca aquí lo que tengas aunque este menú no lo use: al ajustar el menú también se tendrá en cuenta.</p>
             <div class="campo"><label for="buscar-otros">Buscar</label>
               <div class="con-unidad"><input id="buscar-otros" type="search" placeholder="Ej.: garbanzos" autocomplete="off"></div></div>
             <ul class="compra" id="otros"></ul>
@@ -90,15 +98,17 @@
         </details>
       </section>
 
-      <section aria-labelledby="t-hoy">
-        <h2 id="t-hoy">¿Qué cocino hoy?</h2>
-        <p class="medida">Los platos que mejor aprovechan lo que tienes ahora mismo, de más a menos completos.</p>
+      <section class="paso" id="paso-hoy" aria-labelledby="t-hoy">
+        <header class="paso-cabeza">
+          <span class="paso-num" aria-hidden="true">3</span>
+          <div><h2 id="t-hoy">¿Qué cocino hoy?</h2><p>Los platos que mejor aprovechan lo que tienes ahora mismo.</p></div>
+        </header>
         <div id="hoy" class="resultado" aria-live="polite"></div>
       </section>
 
-      <section aria-labelledby="t-temporada" id="temporada">
-        <h2 id="t-temporada">De temporada</h2>
-        <p class="medida">La fruta y la verdura de temporada está más rica, es más barata y suele venir de más cerca. Elige un mes.</p>
+      <section class="paso paso-extra" id="temporada" aria-labelledby="t-temporada">
+        <h2 id="t-temporada">Fruta y verdura de temporada</h2>
+        <p class="medida">Más rica, más barata y de más cerca. Elige un mes.</p>
         <div class="meses" role="tablist" aria-label="Mes" id="meses"></div>
         <div class="temporada" id="temporada-lista" role="tabpanel" aria-live="polite"></div>
         <p class="grafico-fuente">Orientativo para la España peninsular; cada zona tiene sus tiempos.</p>
