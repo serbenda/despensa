@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>despensa · comer bien en casa</title>
-  <meta name="description" content="Guía práctica de alimentación para toda la familia: perder peso sin dietas milagro, comer bien de pequeños y rendir entrenando.">
+  <meta name="description" content="Guía práctica de alimentación para toda la familia: perder peso sin dietas milagro, comer bien de pequeños y rendir entrenando, con herramientas y datos oficiales.">
   <meta name="theme-color" content="#f5f6f0" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#161c18" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://serbenda.github.io/despensa/">
@@ -12,7 +12,7 @@
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="despensa">
   <meta property="og:title" content="despensa · comer bien en casa">
-  <meta property="og:description" content="Guía práctica de alimentación para toda la familia: perder peso sin dietas milagro, comer bien de pequeños y rendir entrenando.">
+  <meta property="og:description" content="Guía práctica de alimentación para toda la familia: perder peso sin dietas milagro, comer bien de pequeños y rendir entrenando, con herramientas y datos oficiales.">
   <meta property="og:url" content="https://serbenda.github.io/despensa/">
   <meta property="og:image" content="https://serbenda.github.io/despensa/img/social.png">
   <meta property="og:image:width" content="1200">
@@ -30,8 +30,11 @@
       <div class="envoltorio">
         <div>
           <h1>Qué poner en el plato, sin dietas milagro</h1>
-          <p class="entradilla">Una guía práctica para comer mejor en casa: para perder peso con calma, para que los niños coman variado y para rendir cuando entrenas. Todo parte de la misma idea, el plato de la derecha.</p>
-          <p class="medida">Toca cada parte del plato para ver qué va en ella.</p>
+          <p class="entradilla">Una guía práctica para comer mejor en casa, con criterio de nutricionista y datos oficiales. Para perder peso con calma, para que los niños coman variado y para rendir cuando entrenas.</p>
+          <p style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem">
+            <a class="boton" href="#objetivos">Elige tu objetivo</a>
+            <a class="boton secundario" href="herramientas.html">Ver las herramientas</a>
+          </p>
         </div>
 
         <figure class="plato-figura">
@@ -64,44 +67,97 @@
           </svg>
           <figcaption class="plato-nota" id="plato-nota" aria-live="polite">
             <strong>El método del plato</strong>
-            Medio plato de verdura, un cuarto de cereal o patata y un cuarto de proteína, con agua para beber y aceite de oliva para cocinar. Sirve para casi cualquier comida y no hace falta pesar nada.
+            Medio plato de verdura, un cuarto de cereal o patata y un cuarto de proteína, con agua para beber y aceite de oliva para cocinar. Toca cada parte para ver qué va en ella.
           </figcaption>
         </figure>
       </div>
     </section>
 
-    <div class="envoltorio">
-      <nav class="estantes" aria-label="Secciones de despensa">
-        <a class="estante s-peso" href="peso.html">
-          <h2>Perder peso</h2>
-          <p>Cambios pequeños que se mantienen: el plato, el hambre de verdad, qué cambiar en la compra y los mitos que conviene olvidar.</p>
+    <section class="bloque-portada" id="objetivos">
+      <div class="envoltorio">
+        <h2>¿Qué quieres conseguir?</h2>
+        <p class="intro">Empieza por lo que te preocupa. Cada sección tiene un resumen de 30 segundos, herramientas para tu caso y lo que dicen las recomendaciones oficiales.</p>
+        <div class="objetivos">
+          <a class="objetivo s-peso" href="peso.html">
+            <h3>Perder peso</h3>
+            <p>Sin pasar hambre ni contar calorías, a un ritmo que se mantenga.</p>
+            <ul><li>Cómo está tu cintura</li><li>Pequeños cambios y su efecto</li><li>Semáforo de etiquetas</li></ul>
+            <span class="ir">Empezar</span>
+          </a>
+          <a class="objetivo s-ninos" href="ninos.html">
+            <h3>Que mis hijos coman bien</h3>
+            <p>Qué ofrecer según la edad, qué evitar y cómo con el «no me gusta».</p>
+            <ul><li>Qué puede comer según su edad</li><li>Raciones con su mano</li><li>Ideas para la fiambrera</li></ul>
+            <span class="ir">Empezar</span>
+          </a>
+          <a class="objetivo s-entrenar" href="entrenar.html">
+            <h3>Rendir entrenando</h3>
+            <p>Combustible, proteína y agua según tu peso y tu día.</p>
+            <ul><li>Tu plan del día</li><li>Cuánto sudas</li><li>Suplementos con pruebas</li></ul>
+            <span class="ir">Empezar</span>
+          </a>
+          <a class="objetivo s-menu" href="menu.html">
+            <h3>Organizar la semana</h3>
+            <p>Menú equilibrado para toda la familia y la compra hecha.</p>
+            <ul><li>Menú de 7 días que cumple la AESAN</li><li>Lista de la compra por pasillos</li><li>Fruta y verdura de temporada</li></ul>
+            <span class="ir">Empezar</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque-portada">
+      <div class="envoltorio">
+        <h2>Lo que de verdad marca la diferencia</h2>
+        <p class="intro">Si solo cambias seis cosas, que sean estas. Son las recomendaciones con más respaldo científico, y en España casi todas se quedan cortas.</p>
+        <ul class="claves">
+          <li style="--g:var(--hortaliza)"><strong>Medio plato de verdura</strong><span>Solo 3 de cada 10 personas toman verdura a diario.</span></li>
+          <li style="--g:var(--grano)"><strong>Legumbre, cuatro veces por semana</strong><span>Menos de 4 de cada 10 llegan a tres. Es proteína, fibra y hierro barato.</span></li>
+          <li style="--g:var(--azulejo)"><strong>Agua como bebida</strong><span>Un tercio de los mayores de 15 años toma refrescos azucarados más de una vez por semana.</span></li>
+          <li style="--g:var(--proteina)"><strong>Menos ultraprocesados</strong><span>Embutidos y dulces entran en la semana de 7 de cada 10 personas.</span></li>
+          <li style="--g:var(--mineral)"><strong>Pescado tres veces por semana</strong><span>Y al menos una de pescado azul, por el omega-3.</span></li>
+          <li style="--g:var(--tinta)"><strong>Moverse y dormir</strong><span>150 minutos de actividad a la semana y siete horas de sueño.</span></li>
+        </ul>
+        <p class="grafico-fuente" style="margin-top:1.2rem">Datos: <a href="datos.html">Encuesta de Salud de España 2023</a>.</p>
+      </div>
+    </section>
+
+    <section class="bloque-portada s-herramientas">
+      <div class="envoltorio">
+        <h2>Herramientas</h2>
+        <p class="intro">Calculan en tu navegador y no guardan nada fuera de él.</p>
+        <ul class="rejilla-herr">
+          <li class="s-peso"><a href="herramientas.html#cintura"><span class="icono" data-icono="cintura"></span><strong>¿Cómo está tu cintura?</strong><span>Riesgo según tu cintura, tu altura y tu IMC.</span></a></li>
+          <li class="s-peso"><a href="herramientas.html#cambios"><span class="icono" data-icono="cambios"></span><strong>Pequeños cambios</strong><span>Cuánto suman los cambios que eliges.</span></a></li>
+          <li class="s-peso"><a href="herramientas.html#etiqueta"><span class="icono" data-icono="etiqueta"></span><strong>Semáforo de la etiqueta</strong><span>Si un producto es para diario o de vez en cuando.</span></a></li>
+          <li class="s-ninos"><a href="herramientas.html#edad"><span class="icono" data-icono="edad"></span><strong>Según su edad</strong><span>Qué evitar y qué dar con cuidado a tu hijo.</span></a></li>
+          <li class="s-ninos"><a href="herramientas.html#manos"><span class="icono" data-icono="manos"></span><strong>Raciones con la mano</strong><span>Cuánto servir sin báscula, para cada persona.</span></a></li>
+          <li class="s-entrenar"><a href="herramientas.html#deporte"><span class="icono" data-icono="deporte"></span><strong>Tu plan de combustible</strong><span>Hidratos, proteína y agua según tu día.</span></a></li>
+          <li class="s-entrenar"><a href="herramientas.html#sudor"><span class="icono" data-icono="sudor"></span><strong>¿Cuánto sudas?</strong><span>Lo que pierdes y lo que tienes que beber.</span></a></li>
+          <li class="s-nutrientes"><a href="herramientas.html#nutrientes"><span class="icono" data-icono="nutrientes"></span><strong>Explora los nutrientes</strong><span>Fibra, calcio, hierro, omega-3 y sal.</span></a></li>
+          <li class="s-menu"><a href="menu.html"><span class="icono" data-icono="menu"></span><strong>Menú semanal</strong><span>Siete días equilibrados y la lista de la compra.</span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="bloque-portada s-datos">
+      <div class="envoltorio">
+        <h2>Cómo comemos en España</h2>
+        <a class="cifras" href="datos.html">
+          <div class="cifra"><b>55 %</b><span>de los adultos tiene sobrepeso u obesidad</span></div>
+          <div class="cifra"><b>36 %</b><span>de los niños de 6 a 9 años tiene exceso de peso</span></div>
+          <div class="cifra"><b>10 a 1</b><span>litros de refresco frente a kilos de legumbre que compramos para casa</span></div>
         </a>
-        <a class="estante s-ninos" href="ninos.html">
-          <h2>Niños</h2>
-          <p>Por edades, de 1 a 12 años: qué ofrecer, desayunos y meriendas, la fiambrera del cole y cómo lidiar con el «no me gusta».</p>
-        </a>
-        <a class="estante s-entrenar" href="entrenar.html">
-          <h2>Entrenar</h2>
-          <p>Qué comer antes, durante y después, cuánta proteína tiene sentido, cómo hidratarse y qué suplementos sobran.</p>
-        </a>
-        <a class="estante s-menu" href="menu.html">
-          <h2>Menú y compra</h2>
-          <p>Genera un menú semanal equilibrado para toda la familia, mira qué está de temporada y llévate la lista de la compra al súper.</p>
-        </a>
-        <a class="estante ancho s-datos" href="datos.html">
-          <h2>Datos</h2>
-          <p>Cómo comemos en España, con las cifras oficiales más recientes y gráficos que se entienden.</p>
-          <div class="cifras">
-            <div class="cifra"><b>55 %</b><span>de los adultos tiene sobrepeso u obesidad</span></div>
-            <div class="cifra"><b>36 %</b><span>de los niños de 6 a 9 años tiene exceso de peso</span></div>
-            <div class="cifra"><b>10 a 1</b><span>litros de refresco frente a kilos de legumbre que compramos para casa</span></div>
-          </div>
-        </a>
-      </nav>
-    </div>
+        <p><a href="datos.html">Ver todos los datos y gráficos</a></p>
+      </div>
+    </section>
   </main>
 
   <script src="js/comun.js"></script>
   <script src="js/plato.js"></script>
+  <script src="js/herramientas.js"></script>
+  <script>
+    document.querySelectorAll("[data-icono]").forEach(e => { e.innerHTML = Despensa.icono(e.dataset.icono); });
+  </script>
 </body>
 </html>
