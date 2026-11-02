@@ -63,12 +63,12 @@
       `<div class="herr-cuerpo">
         <div class="campos">
           ${campo(a, "Altura", "cm", 'min="120" max="230" step="1" inputmode="decimal" data-mem="altura"', "", d.altura)}
-          ${campo(c, "Cintura", "cm", 'min="40" max="200" step="0.5" inputmode="decimal"', "A la altura del ombligo, sin apretar y después de soltar el aire.", d.cintura)}
+          ${campo(c, "Cintura", "cm", 'min="40" max="200" step="0.5" inputmode="decimal"', "A medio camino entre la última costilla y el hueso de la cadera, sin apretar y después de soltar el aire.", d.cintura)}
           ${campo(p, "Peso, opcional", "kg", 'min="30" max="300" step="0.1" inputmode="decimal" data-mem="peso"', "Para calcular también el IMC.", d.peso)}
         </div>
         ${segmentos(sx, "Sexo", [["m", "Mujer"], ["h", "Hombre"]], d.sexo || "m")}
         <div class="resultados-2" aria-live="polite"><div class="resultado r1"></div><div class="resultado r2"></div></div>
-        <p class="nota-herr">Cintura entre altura: 0,4 a 0,49 sin riesgo añadido, 0,5 a 0,59 riesgo aumentado, 0,6 o más riesgo alto (<a href="https://www.nice.org.uk/guidance/ng246">NICE</a>). Perímetro de cintura y categorías del IMC: <a href="https://www.who.int/es/news-room/fact-sheets/detail/obesity-and-overweight">OMS</a>. Para niños y adolescentes se usan tablas de percentiles: pregunta en tu centro de salud.</p>
+        <p class="nota-herr">Cintura entre altura: 0,4 a 0,49 sin riesgo añadido, 0,5 a 0,59 riesgo aumentado, 0,6 o más riesgo alto (<a href="https://www.nice.org.uk/guidance/ng246">NICE</a>), para personas con un IMC por debajo de 35. Perímetro de cintura y categorías del IMC: <a href="https://www.who.int/es/news-room/fact-sheets/detail/obesity-and-overweight">OMS</a>. Para niños y adolescentes se usan tablas de percentiles: pregunta en tu centro de salud.</p>
       </div>`;
 
     const calc = () => {
@@ -115,7 +115,7 @@
         r2.innerHTML = `<b>Índice de masa corporal</b>
           <span class="grande">${nf(imc, 1)}</span>${estado(cat[0], cat[1])}
           <p style="margin-top:.6rem">Para tu altura, el rango normal va de ${nf(min)} a ${nf(max)} kg.</p>${extra}
-          <p class="suave" style="font-size:.88rem">El IMC no distingue músculo de grasa: en personas muy musculadas o mayores de 65 años puede engañar.</p>`;
+          <p class="suave" style="font-size:.88rem">El IMC no distingue músculo de grasa: en personas muy musculadas o mayores de 65 años puede engañar. En personas de origen asiático, de Oriente Medio, africano o afrocaribeño el riesgo empieza antes: sobrepeso desde 23 y obesidad desde 27,5.</p>`;
       }
     };
     el.addEventListener("input", calc);
@@ -150,7 +150,7 @@
           ${campo(rac, "Ración, opcional", "g o ml", 'min="1" max="2000" step="1" inputmode="decimal"', "Lo que te vas a tomar de una vez.")}
         </div>
         <div aria-live="polite"><div class="semaforo"></div><div class="resultado veredicto"></div></div>
-        <p class="nota-herr">Umbrales del semáforo nutricional de la <a href="https://www.food.gov.uk/business-guidance/nutrition-labelling">agencia alimentaria británica</a>, la referencia más usada en Europa. Los azúcares de la etiqueta incluyen los propios de la leche y la fruta: en un yogur natural no son azúcar añadido.</p>
+        <p class="nota-herr">Umbrales del semáforo nutricional del <a href="https://assets.publishing.service.gov.uk/media/5a80cd03ed915d74e33fc7c5/FoP_Nutrition_labelling_UK_guidance.pdf">Gobierno británico</a>, la referencia más usada en Europa, incluida la regla para raciones grandes (bebidas de más de 150 ml y comidas de más de 100 g). Los azúcares de la etiqueta incluyen los propios de la leche y la fruta: en un yogur natural no son azúcar añadido.</p>
       </div>`;
 
     const calc = () => {
@@ -163,29 +163,35 @@
         ver.innerHTML = '<p class="vacio">Rellena al menos un valor o elige un ejemplo.</p>';
         return;
       }
+      const rv = valor(el, "#" + rac);
+      // Regla de raciones grandes: bebidas de más de 150 ml y comidas de más de 100 g.
+      const limR = tipo === "bebida"
+        ? (rv > 150 ? { grasas: 10.5, saturadas: 3, azucares: 13.5, sal: 0.9 } : null)
+        : (rv > 100 ? { grasas: 21, saturadas: 6, azucares: 27, sal: 1.8 } : null);
       const niveles = NUTR.map(([k, t], i) => {
         const v = vals[i];
         if (isNaN(v)) return { k, t, n: null };
-        const n = v <= u[k][0] ? "ok" : v > u[k][1] ? "no" : "ojo";
-        return { k, t, v, n };
+        let n = v <= u[k][0] ? "ok" : v > u[k][1] ? "no" : "ojo";
+        let racion = false;
+        if (limR && v * rv / 100 > limR[k] && n !== "no") { n = "no"; racion = true; }
+        return { k, t, v, n, racion };
       });
       const txt = { ok: "Bajo", ojo: "Medio", no: "Alto" };
       sem.innerHTML = niveles.map(x => x.n
-        ? `<div class="luz ${x.n}"><b>${x.t}</b><span class="v">${nf(x.v, x.v < 1 && x.v > 0 ? 2 : 1)} g</span>${estado(x.n, txt[x.n])}</div>`
+        ? `<div class="luz ${x.n}"><b>${x.t}</b><span class="v">${nf(x.v, x.v < 1 && x.v > 0 ? 2 : 1)} g</span>${estado(x.n, x.racion ? "Alto por ración" : txt[x.n])}</div>`
         : `<div class="luz"><b>${x.t}</b><span class="v">—</span></div>`).join("");
       const rojos = niveles.filter(x => x.n === "no"), ambar = niveles.filter(x => x.n === "ojo");
       let titulo, cuerpo;
       if (rojos.length) {
         titulo = "Para de vez en cuando";
         cuerpo = `Tiene mucha ${rojos.map(x => x.t.toLowerCase()).join(" y ").replace("azúcares", "azúcar").replace("grasas", "grasa").replace("saturadas", "grasa saturada")}. Busca una versión con menos o tómalo en ocasiones, no a diario.`;
-      } else if (ambar.length >= 2) {
-        titulo = "Aceptable con moderación";
-        cuerpo = "Nada se dispara, pero hay varios valores en ámbar. Compara con otras marcas: a menudo hay una mejor en el mismo estante.";
+      } else if (ambar.length >= 1) {
+        titulo = "Bien, con algún valor medio";
+        cuerpo = `Nada se dispara, pero hay ${ambar.length === 1 ? "un valor" : "varios valores"} en ámbar. Compara con otras marcas: a menudo hay una mejor en el mismo estante.`;
       } else {
         titulo = "Buena elección para el día a día";
-        cuerpo = "Valores bajos o moderados. Aun así, mira la lista de ingredientes: cuantos menos y más reconocibles, mejor.";
+        cuerpo = "Todos los valores son bajos. Aun así, mira la lista de ingredientes: cuantos menos y más reconocibles, mejor.";
       }
-      const rv = valor(el, "#" + rac);
       let porcion = "";
       if (rv > 0) {
         const az = vals[2], sal = vals[3];
@@ -332,7 +338,7 @@
       let durante, chH = "";
       if (min <= 45) durante = "Solo agua, a sorbos y según la sed.";
       else if (min <= 75) durante = "Agua. Si es muy intenso, unos sorbos de bebida isotónica pueden ayudar.";
-      else if (min <= 150) { durante = "Entre 30 y 60 g de hidratos por hora a partir de la primera hora."; chH = "Medio o un plátano cada 30 a 45 minutos, o uno o dos geles por hora."; }
+      else if (min <= 150) { durante = "Entre 30 y 60 g de hidratos por hora a partir de la primera hora."; chH = "Un plátano cada 30 a 45 minutos, o uno o dos geles por hora."; }
       else { durante = "De 60 a 90 g de hidratos por hora, si tu tripa está entrenada para tomarlos."; chH = "Mezcla fuentes (bebida isotónica, geles, plátano, dátiles) y empieza pronto, antes de notar el bajón."; }
       const antesCH = min >= 90 ? `<li>Si la sesión pasa de hora y media: de ${r5(1 * kg)} a ${r5(2 * kg)} g de hidratos en esa comida.</li>` : "";
       sal.innerHTML = `<div class="resultados-2" style="margin-bottom:.9rem">
@@ -401,11 +407,11 @@
   const EDADES = [["b", "6 a 12 meses"], ["p", "1 a 3 años"], ["i", "4 a 6 años"], ["e", "7 a 10 años"], ["a", "11 a 14 años"]];
   // [estado por edad b,p,i,e,a] con texto opcional por edad
   const CUIDADOS = [
-    { n: "Miel", e: { b: ["no", "Riesgo de botulismo infantil antes del año, aunque esté cocinada."], _: ["ojo", "Ya se puede, pero es azúcar: de vez en cuando."] } },
+    { n: "Miel", e: { b: ["no", "Riesgo de botulismo infantil antes del año, aunque esté cocinada."], p: ["no", "Ya no hay riesgo de botulismo, pero es azúcar libre: mejor a partir de los 2 años."], _: ["ojo", "Es azúcar: de vez en cuando."] } },
     { n: "Sal añadida", e: { b: ["no", "Sus riñones aún no la manejan bien. Cocina sin sal."], _: ["ojo", "Poca y siempre yodada. Cuidado con embutidos, quesos y precocinados."] } },
     { n: "Azúcar, dulces y bollería", e: { b: ["no", "Nada de azúcar añadido."], p: ["no", "Cuanto más tarde lo prueben, mejor."], _: ["ojo", "De ocasión: cumpleaños y fiestas, no como premio."] } },
     { n: "Zumos, también naturales", e: { b: ["no", "Mejor la fruta entera, aplastada o en trozos."], p: ["no", "La fruta entera sacia y conserva la fibra."], _: ["ojo", "De vez en cuando. No cuentan como ración de fruta."] } },
-    { n: "Leche de vaca como bebida", e: { b: ["no", "Antes del año, leche materna o de fórmula. En yogur o cocinada, en pequeñas cantidades, sí."], _: ["ok", "Sí, entera o semidesnatada, sin azúcar ni cacao azucarado."] } },
+    { n: "Leche de vaca como bebida", e: { b: ["no", "Antes del año, leche materna o de fórmula. En yogur o cocinada, en pequeñas cantidades, sí."], p: ["ok", "Sí, entera hasta los 2 años; desde los 2, entera o semidesnatada. Sin azúcar ni cacao azucarado."], _: ["ok", "Sí, entera o semidesnatada, sin azúcar ni cacao azucarado."] } },
     { n: "Espinacas y acelgas", e: { b: ["no", "Por los nitratos, mejor no antes del año. Si las usas, menos del 20 % del puré."], p: ["ojo", "Como mucho una ración al día, y ninguna si tiene una gastroenteritis bacteriana."], _: ["ok", "Sí, con normalidad. Guárdalas en la nevera una vez cocinadas."] } },
     { n: "Pez espada, tiburón, atún rojo y lucio", e: { a: ["ojo", "Por el mercurio, como mucho 120 g al mes."], _: ["no", "Por el mercurio, nada hasta los 10 años."] } },
     { n: "Pescado en general", e: { b: ["ok", "Sí, blanco y azul pequeño, sin espinas y bien cocinado."], _: ["ok", "De 3 a 4 veces por semana, variando entre blanco y azul."] } },
@@ -414,7 +420,7 @@
     { n: "Salchichas y embutidos", e: { b: ["no", "Demasiada sal y procesado."], p: ["ojo", "Ocasional y cortado en tiras a lo largo, nunca en rodajas."], _: ["ojo", "Procesados: de vez en cuando, no a diario."] } },
     { n: "Caramelos duros, chicles y palomitas", e: { e: ["ojo", "Ya con menos riesgo de atragantamiento, pero son de ocasión."], a: ["ojo", "De ocasión."], _: ["no", "Alto riesgo de atragantamiento hasta los 3 a 6 años."] } },
     { n: "Manzana y zanahoria crudas", e: { b: ["ojo", "Ralladas, cocidas o asadas."], p: ["ojo", "Ralladas o en láminas finas."], _: ["ok", "Sí, en trozos que pueda morder."] } },
-    { n: "Bebidas y tortitas de arroz", e: { b: ["no", "Por el arsénico inorgánico del arroz."], p: ["no", "Bebidas de arroz, no. Tortitas, no a diario."], i: ["no", "Bebidas de arroz, mejor no hasta los 6 años. Varía los cereales."], _: ["ok", "Sí, variando con otros cereales."] } },
+    { n: "Arroz, bebidas y tortitas de arroz", e: { b: ["no", "Bebidas y tortitas de arroz, no, por el arsénico inorgánico. El arroz, blanco y variando con otros cereales."], p: ["ojo", "Bebidas de arroz, no. Tortitas, no a diario. Arroz como mucho 4 veces por semana y mejor blanco que integral."], i: ["ojo", "Bebidas de arroz, no. Tortitas, no a diario. Arroz como mucho 4 veces por semana."], _: ["ok", "Sí, variando con otros cereales."] } },
     { n: "Bebidas energéticas y con cafeína", e: { _: ["no", "No son para niños ni adolescentes, tampoco para hacer deporte."] } },
     { n: "Cabezas de gambas y cigalas", e: { _: ["ojo", "Mejor no chuparlas: acumulan cadmio. Para toda la familia."] } },
   ];
@@ -429,7 +435,7 @@
           <label><input type="checkbox" value="ok" checked> ${estado("ok", "Sí")}</label></div>
         <p class="edad-resumen" aria-live="polite"></p>
         <ul class="lista-edad"></ul>
-        <p class="nota-herr">Fuentes: <a href="https://maldita.es/malditaciencia/2019/12/22/pescado-y-mercurio-las-recomendaciones-de-la-aesan-actualizan-las-anteriores-y-son-mas-restrictivas-en-los-menores-de-10-anos/">AESAN, mercurio (2019)</a>, <a href="https://www.consumer.es/seguridad-alimentaria/contaminantes-alimentarios-nuevas-recomendaciones-sobre-su-consumo.html">AESAN, nitratos y cadmio</a>, <a href="https://aeped.es/sites/default/files/atragantamiento_csvaep_final.pdf">AEP, atragantamientos</a> y <a href="https://www.consumer.es/?p=608092">Agencia Catalana de Seguridad Alimentaria, arroz</a>. Si hay alergias o una enfermedad, manda lo que diga su pediatra.</p>
+        <p class="nota-herr">Fuentes: <a href="https://maldita.es/malditaciencia/2019/12/22/pescado-y-mercurio-las-recomendaciones-de-la-aesan-actualizan-las-anteriores-y-son-mas-restrictivas-en-los-menores-de-10-anos/">AESAN, mercurio (2019)</a>, <a href="https://www.consumer.es/seguridad-alimentaria/contaminantes-alimentarios-nuevas-recomendaciones-sobre-su-consumo.html">AESAN, nitratos y cadmio</a>, <a href="https://aeped.es/sites/default/files/atragantamiento_csvaep_final.pdf">AEP, atragantamientos</a> y <a href="https://www.consumer.es/?p=608092">AESAN y Agencia de Salud Pública de Cataluña, arroz</a>. Si hay alergias o una enfermedad, manda lo que diga su pediatra.</p>
       </div>`;
     const pintar = () => {
       const ed = radio(el, nm);
@@ -525,7 +531,7 @@
         ["Pera con piel, una mediana", 5.5], ["Brócoli, 150 g", 4.5], ["Manzana con piel, una mediana", 4.3], ["Pan integral, 60 g", 4.2],
         ["Copos de avena, 40 g", 4], ["Almendras, un puñado de 30 g", 3.7], ["Arroz integral cocido, 150 g", 2.7], ["Pan blanco, 60 g", 1.6], ["Arroz blanco cocido, 150 g", 0.6],
       ],
-      consejos: ["Pasa a integral el pan, el arroz y la pasta: es el cambio más fácil.", "Legumbre cuatro veces por semana resuelve casi la mitad.", "Fruta entera y con piel, mejor que zumo.", "Sube la fibra poco a poco y bebe agua para evitar gases."],
+      consejos: ["Pasa a integral el pan, el arroz y la pasta: es el cambio más fácil. En menores de 3 años, el arroz mejor blanco, por el arsénico.", "Legumbre cuatro veces por semana resuelve casi la mitad.", "Fruta entera y con piel, mejor que zumo.", "Sube la fibra poco a poco y bebe agua para evitar gases."],
     },
     calcio: {
       t: "Calcio", para: "Construye y mantiene huesos y dientes. También interviene en la contracción muscular y la coagulación.",
@@ -556,7 +562,7 @@
         ["Salmón, 120 g", 2.2], ["Caballa, 120 g", 2.0], ["Boquerones frescos, 120 g", 1.7], ["Sardinas frescas, 120 g", 1.4], ["Trucha, 120 g", 1.1],
         ["Merluza, 120 g", 0.3], ["Gambas, 100 g", 0.3], ["Atún en lata, 80 g", 0.2], ["Nueces, 30 g", 0, "su omega-3 es de otro tipo y se aprovecha poco"],
       ],
-      consejos: ["Una ración de salmón, caballa o sardinas cubre la semana.", "El pescado azul pequeño (sardina, boquerón, caballa) tiene poco mercurio.", "Las nueces y el lino aportan omega-3 vegetal: bueno, pero no sustituye al pescado.", "Si no comes pescado, consulta si te conviene un suplemento de algas."],
+      consejos: ["Una o dos raciones a la semana de salmón, caballa, sardinas o boquerones bastan.", "El pescado azul pequeño (sardina, boquerón, caballa) tiene poco mercurio.", "Si comes boquerones en vinagre o pescado crudo, congélalo antes al menos cinco días por el anisakis.", "Las nueces y el lino aportan omega-3 vegetal: bueno, pero no sustituye al pescado.", "Si no comes pescado, consulta si te conviene un suplemento de algas."],
     },
     sal: {
       t: "Sal", para: "El exceso sube la tensión arterial, la principal causa de infarto e ictus. La mayor parte ya viene dentro de los alimentos.",
