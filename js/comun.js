@@ -4,8 +4,10 @@
     { id: "peso", href: "peso.html", texto: "Perder peso", clase: "s-peso" },
     { id: "ninos", href: "ninos.html", texto: "Niños", clase: "s-ninos" },
     { id: "entrenar", href: "entrenar.html", texto: "Entrenar", clase: "s-entrenar" },
+    { id: "nutrientes", href: "nutrientes.html", texto: "Nutrientes", clase: "s-nutrientes" },
     { id: "menu", href: "menu.html", texto: "Menú y compra", clase: "s-menu" },
     { id: "datos", href: "datos.html", texto: "Datos", clase: "s-datos" },
+    { id: "herramientas", href: "herramientas.html", texto: "Herramientas", clase: "s-herramientas nav-herramientas" },
   ];
 
   const actual = document.body.dataset.pagina || "";
@@ -67,18 +69,41 @@
         <p>© ${new Date().getFullYear()} Bendi · <a href="https://github.com/serbenda/despensa">Código en GitHub</a></p>
       </div>
       <div>
-        <h2>Fuentes</h2>
+        <h2>Secciones</h2>
+        <ul>${paginas.map(p => `<li><a href="${p.href}">${p.texto}</a></li>`).join("")}</ul>
+      </div>
+      <div>
+        <h2>Fuentes principales</h2>
         <ul>
-          <li><a href="https://www.aesan.gob.es/AECOSAN/web/nutricion/subseccion/recomendaciones_dieteticas.htm">AESAN: recomendaciones dietéticas</a></li>
+          <li><a href="https://www.aesan.gob.es/AECOSAN/web/noticias_y_actualizaciones/noticias/2022/recomendaciones_dieteticas.htm">AESAN: recomendaciones dietéticas</a></li>
           <li><a href="https://www.who.int/es/news-room/fact-sheets/detail/healthy-diet">OMS: alimentación sana</a></li>
-          <li><a href="https://www.who.int/es/news-room/fact-sheets/detail/physical-activity">OMS: actividad física</a></li>
+          <li><a href="https://www.efsa.europa.eu/es/topics/topic/dietary-reference-values">EFSA: valores dietéticos de referencia</a></li>
           <li><a href="https://enfamilia.aeped.es/">AEP: En Familia</a></li>
-          <li><a href="https://nutritionsource.hsph.harvard.edu/healthy-eating-plate/translations/spanish/">Harvard: el plato para comer saludable</a></li>
           <li><a href="https://www.ine.es/dyngs/Prensa/es/ESdE2023.htm">INE: Encuesta de Salud de España 2023</a></li>
-          <li><a href="https://aesan.gob.es/nutricion/datos-sobrepeso-obesidad/aladino-2023">AESAN: estudio ALADINO 2023</a></li>
           <li><a href="https://www.bedca.net/">BEDCA: composición de alimentos</a></li>
         </ul>
       </div>
     </div>`;
   document.body.append(pie);
+
+  // Índice de la página: marca la sección que se está leyendo.
+  const enlaces = Array.from(document.querySelectorAll(".indice a[href^='#']"));
+  if (enlaces.length && "IntersectionObserver" in window) {
+    const porId = new Map(enlaces.map(a => [a.getAttribute("href").slice(1), a]));
+    const visibles = new Map();
+    const marcar = id => {
+      enlaces.forEach(a => a.classList.toggle("activo", a === porId.get(id)));
+      const a = porId.get(id);
+      const lista = a && a.closest("ol");
+      if (a && lista && lista.scrollWidth > lista.clientWidth) {
+        lista.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" });
+      }
+    };
+    const obs = new IntersectionObserver(entradas => {
+      entradas.forEach(e => visibles.set(e.target.id, e.isIntersecting ? e.boundingClientRect.top : null));
+      const arriba = [...visibles.entries()].filter(([, v]) => v !== null).sort((a, b) => a[1] - b[1])[0];
+      if (arriba) marcar(arriba[0]);
+    }, { rootMargin: "-10% 0px -60% 0px" });
+    porId.forEach((_, id) => { const s = document.getElementById(id); if (s) obs.observe(s); });
+  }
 })();
