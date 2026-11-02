@@ -109,7 +109,11 @@
         <p class="marca-pie">despensa</p>
         <h2>Antes de nada</h2>
         <p>despensa es una guía divulgativa basada en recomendaciones públicas. No sustituye la consulta con tu médico, pediatra o dietista-nutricionista, sobre todo si tienes una enfermedad, estás embarazada o se trata de un bebé.</p>
-        <p>© ${new Date().getFullYear()} Bendi · <a href="https://github.com/serbenda/despensa">Código en GitHub</a></p>
+        <div class="apoyo">
+          <p><strong>¿Te resulta útil?</strong> despensa es gratis y sin publicidad. Si quieres que siga creciendo, puedes apoyarla.</p>
+          <a class="boton-apoyo" href="https://github.com/sponsors/serbenda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.4 7.6 3.6 4 7.1 4c2 0 3.6 1.1 4.9 2.8C13.3 5.1 14.9 4 16.9 4c3.5 0 5.7 3.6 4.4 7.1-1.8 4.8-9.3 9.4-9.3 9.4z" fill="currentColor"/></svg>Apoyar en GitHub Sponsors</a>
+        </div>
+        <p>© ${new Date().getFullYear()} Bendi</p>
       </div>
       <div>
         <h2>Secciones</h2>

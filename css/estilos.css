@@ -822,3 +822,14 @@ h3, .grafico-titulo, .herr-cabeza h3 { font-stretch: 92%; }
   .cabecera-seccion { background: none; }
   .esencial { transform: none; box-shadow: none; }
 }
+
+/* Apoyo con GitHub Sponsors */
+.apoyo { margin: 1.4rem 0 1.2rem; padding: 1rem 1.1rem; border-radius: var(--radio); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); }
+.apoyo p { margin: 0 0 0.8rem; }
+.apoyo strong { color: var(--sobre-banda); }
+.pie a.boton-apoyo, .boton-apoyo {
+  display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-weight: 700;
+  background: var(--sobre-banda); color: var(--banda); border-radius: 999px; padding: 0.55rem 1.1rem;
+}
+.pie a.boton-apoyo:hover, .boton-apoyo:hover { color: var(--banda); filter: brightness(0.95); }
+.boton-apoyo svg { width: 18px; height: 18px; color: #c4395b; }
