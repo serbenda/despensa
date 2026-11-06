@@ -6,9 +6,9 @@ const PASILLOS = {
   "Fruta y verdura": ["tomate", "cebolla", "pimiento", "calabacín", "berenjena", "zanahoria", "espinacas", "acelgas", "brócoli", "coliflor", "judías verdes", "lechuga", "pepino", "calabaza", "puerro", "champiñones", "patata", "boniato", "limón", "ajo", "aguacate", "alcachofas", "espárragos verdes", "col", "apio", "cogollos", "rúcula"],
   "Pescadería": ["merluza", "salmón", "sardinas", "bacalao", "lubina", "dorada", "gambas", "calamares", "mejillones", "caballa"],
   "Carnicería": ["pechuga de pollo", "muslos de pollo", "pavo", "conejo", "ternera magra", "carne picada de ternera", "lomo de cerdo"],
-  "Huevos y lácteos": ["huevos", "queso fresco", "queso rallado", "mozzarella", "yogur natural", "requesón", "tofu firme"],
+  "Huevos y lácteos": ["huevos", "queso fresco", "queso rallado", "mozzarella", "yogur natural", "requesón", "tofu firme", "bebida de soja enriquecida"],
   "Despensa": ["lentejas", "garbanzos", "alubias blancas", "alubias rojas", "lentejas rojas", "arroz integral", "pasta integral", "fideos integrales", "cuscús", "quinoa", "tomate triturado", "atún al natural", "caldo de verduras", "leche de coco", "nueces", "pimentón", "comino", "curry", "orégano", "tahini", "crema de cacahuete"],
-  "Pan y cereales": ["pan integral", "tortillas de trigo integrales", "masa de pizza integral", "pan de hamburguesa integral"],
+  "Pan y cereales": ["pan integral", "tortillas de trigo integrales", "masa de pizza integral", "pan de hamburguesa integral", "tortitas de maíz"],
   "Congelados": ["guisantes", "maíz dulce", "verdura para wok"],
 };
 
@@ -73,6 +73,19 @@ const PLATOS = [
   { n: "Ensalada de quinoa, aguacate y queso", g: "verdura", i: ["quinoa", "aguacate", "tomate", "pepino", "queso fresco"] },
   { n: "Coliflor al horno con salsa de yogur y garbanzos tostados", g: "verdura", i: ["coliflor", "yogur natural", "garbanzos", "comino"] },
   { n: "Lasaña de verduras y requesón", g: "verdura", i: ["calabacín", "berenjena", "espinacas", "requesón", "tomate triturado", "queso rallado", "pasta integral"] },
+
+  // Cenas ligeras
+  { n: "Merluza a la plancha con ensalada", g: "pescado", i: ["merluza", "lechuga", "tomate", "pepino", "limón"] },
+  { n: "Salmón en papillote con calabacín", g: "pescado", i: ["salmón", "calabacín", "limón", "pan integral"] },
+  { n: "Sopa de pescado con verduras", g: "pescado", i: ["merluza", "gambas", "puerro", "zanahoria", "tomate", "caldo de verduras"] },
+  { n: "Sardinas a la plancha con pimientos asados", g: "pescado", i: ["sardinas", "pimiento", "pan integral"] },
+  { n: "Crema de calabacín y tortilla francesa", g: "huevo", i: ["huevos", "calabacín", "puerro", "patata"] },
+  { n: "Revuelto de setas con ensalada de tomate", g: "huevo", i: ["huevos", "champiñones", "lechuga", "tomate"] },
+  { n: "Crema de verduras con queso fresco y pan integral", g: "verdura", i: ["calabaza", "zanahoria", "puerro", "queso fresco", "pan integral"] },
+  { n: "Verduras al horno con queso fresco y nueces", g: "verdura", i: ["berenjena", "calabacín", "pimiento", "cebolla", "queso fresco", "nueces"] },
+  { n: "Pollo a la plancha con ensalada y pan integral", g: "carne", i: ["pechuga de pollo", "lechuga", "tomate", "pepino", "pan integral"], blanca: true },
+  { n: "Pavo salteado con verduras", g: "carne", i: ["pavo", "calabacín", "pimiento", "champiñones", "cebolla"], blanca: true },
+  { n: "Ensalada de alubias con tomate y pimiento", g: "legumbre", i: ["alubias blancas", "tomate", "pimiento", "cebolla"] },
 ];
 
 const BASICOS = [
@@ -99,6 +112,9 @@ const DESAYUNOS = [
   { n: "Requesón con fruta y nueces, y una tostada integral", i: ["requesón", "fruta de temporada variada", "nueces", "pan integral"] },
   { n: "Tostada integral con hummus y una fruta", i: ["pan integral", "garbanzos", "tahini", "limón", "fruta de temporada variada"] },
   { n: "Leche con copos de avena, nueces y fruta", i: ["leche", "copos de avena", "nueces", "fruta de temporada variada"] },
+  { n: "Tortitas de maíz con aguacate y tomate, y una fruta", i: ["tortitas de maíz", "aguacate", "tomate", "fruta de temporada variada"] },
+  { n: "Fruta de temporada con un puñado de frutos secos", i: ["fruta de temporada variada", "frutos secos naturales"] },
+  { n: "Fruta de temporada y una infusión", i: ["fruta de temporada variada"] },
 ];
 
 // Meriendas y media mañana: pequeñas, con algo de proteína o fibra.
@@ -111,4 +127,6 @@ const MERIENDAS = [
   { n: "Bocadillo pequeño de tortilla", i: ["pan integral", "huevos"] },
   { n: "Batido casero de leche y fruta, sin azúcar", i: ["leche", "fruta de temporada variada"] },
   { n: "Tostada integral con atún y tomate", i: ["pan integral", "atún al natural", "tomate"] },
+  { n: "Tortitas de maíz con aguacate", i: ["tortitas de maíz", "aguacate"] },
+  { n: "Una pieza de fruta", i: ["fruta de temporada variada"] },
 ];
