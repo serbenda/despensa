@@ -30,7 +30,7 @@
       <div class="envoltorio con-esencial">
         <div>
           <h1>El menú de la semana, resuelto</h1>
-          <p class="entradilla">Desayuno, comida, merienda y cena para los siete días. En tres pasos: mira el menú, marca en la lista de la compra lo que ya tienes en casa y deja que el menú se ajuste a ello.</p>
+          <p class="entradilla">Desayuno, comida, merienda y cena para los siete días, con receta y cantidades para los que sois. En tres pasos: mira el menú, marca en la lista de la compra lo que ya tienes en casa y deja que el menú se ajuste a ello.</p>
         </div>
         <aside class="esencial" aria-labelledby="e-t">
           <h2 id="e-t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lo que cumple cada menú</h2>
@@ -40,6 +40,7 @@
             <li>Huevo hasta cuatro veces, contando desayunos y meriendas.</li>
             <li>Carne como mucho tres, sobre todo de ave, y roja una vez como máximo.</li>
             <li>Desayunos y meriendas con cereal integral, lácteo o proteína y fruta.</li>
+            <li>Cenas ligeras: los guisos y los arroces, a mediodía.</li>
           </ul>
         </aside>
       </div>
@@ -59,8 +60,27 @@
         </header>
         <div class="barra-menu">
           <button class="boton" type="button" id="nuevo">Otro menú</button>
+          <div class="contador-personas" role="group" aria-labelledby="personas-t">
+            <span id="personas-t">Personas</span>
+            <button type="button" id="menos" aria-label="Una persona menos">−</button>
+            <output id="personas" aria-live="polite">2</output>
+            <button type="button" id="mas" aria-label="Una persona más">+</button>
+          </div>
           <label class="interruptor"><input type="checkbox" id="vegetariano"> Sin carne ni pescado</label>
           <button class="boton secundario pequeno" type="button" id="imprimir">Imprimir</button>
+        </div>
+        <div class="ajustes-menu">
+          <details class="ajuste">
+            <summary>Alergias e intolerancias <span id="alergias-cuenta"></span></summary>
+            <div class="ajuste-dentro">
+              <p class="suave">Los platos con lo que marques no saldrán nunca, ni en desayunos ni en meriendas. Revisa siempre las etiquetas: un mismo producto puede llevar trazas según la marca.</p>
+              <div class="chips" id="alergias"></div>
+            </div>
+          </details>
+          <details class="ajuste">
+            <summary>Platos que no os gustan <span id="vetados-cuenta"></span></summary>
+            <div class="ajuste-dentro"><ul class="vetados" id="vetados"></ul></div>
+          </details>
         </div>
         <p class="semana-pista">Desliza para ver todos los días.</p>
         <div class="semana" id="semana" aria-live="polite"></div>
@@ -74,7 +94,7 @@
       <section class="paso" id="paso-compra" aria-labelledby="t-compra">
         <header class="paso-cabeza">
           <span class="paso-num" aria-hidden="true">2</span>
-          <div><h2 id="t-compra">Tu lista de la compra</h2><p>Marca lo que ya tienes en casa. Lo que quede sin marcar es lo que hay que comprar.</p></div>
+          <div><h2 id="t-compra">Tu lista de la compra</h2><p>Con cantidades para toda la semana. Marca lo que ya tienes en casa: lo que quede sin marcar es lo que hay que comprar.</p></div>
         </header>
         <div class="compra-cabeza">
           <div class="compra-contador" id="compra-contador" aria-live="polite"></div>
@@ -118,7 +138,19 @@
   </main>
 
   <script src="js/comun.js"></script>
+  <dialog class="ficha" id="ficha" aria-labelledby="ficha-titulo">
+    <div class="ficha-dentro">
+      <button type="button" class="ficha-cerrar" aria-label="Cerrar">×</button>
+      <div id="ficha-cuerpo"></div>
+      <div class="ficha-acciones">
+        <button type="button" class="boton" id="ficha-cambiar">Cambiar este plato</button>
+        <button type="button" class="boton secundario" id="ficha-vetar">No nos gusta</button>
+      </div>
+    </div>
+  </dialog>
+
   <script src="js/platos.js"></script>
+  <script src="js/recetas.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/temporada.js"></script>
 </body>

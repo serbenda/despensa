@@ -37,7 +37,7 @@ despensa es divulgativa: no sustituye la consulta con un médico, pediatra o die
 | [Niños](https://serbenda.github.io/despensa/ninos.html) | Reparto de papeles en la mesa, seguridad por edad, raciones, desayunos, fiambrera, el «no me gusta», azúcar, sueño y pantallas, señales para consultar. | Qué puede comer según su edad, raciones con su mano, ideas para la fiambrera, azúcar en terrones |
 | [Entrenar](https://serbenda.github.io/despensa/entrenar.html) | Combustible y proteína según el día, qué comer y cuándo, hidratación, un día de ejemplo, suplementos según la evidencia y déficit energético. | Plan de combustible, calculadora de sudor, proteína por ración |
 | [Nutrientes](https://serbenda.github.io/despensa/nutrientes.html) | Fibra, calcio, hierro, omega-3 y sal; agua; vitamina D, B12, yodo y folato; embarazo, dieta vegetariana y mayores de 65. | Explorador de nutrientes |
-| [Menú](https://serbenda.github.io/despensa/menu.html) | Desayuno, comida, merienda y cena para siete días, en tres pasos: el menú, la lista de la compra donde marcas lo que ya tienes y qué cocinar hoy. Cada menú cumple las raciones de la AESAN, con los huevos contados en todas las comidas. | Menú semanal, lista de la compra marcable, ajustar el menú a lo que tengo, ¿qué cocino hoy?, calendario de temporada |
+| [Menú](https://serbenda.github.io/despensa/menu.html) | Desayuno, comida, merienda y cena para siete días, en tres pasos: el menú, la lista de la compra donde marcas lo que ya tienes y qué cocinar hoy. Cada plato trae su receta paso a paso y la lista sale con cantidades para los que sois. Cenas ligeras, filtros de alergias y platos que no os gustan. Cada menú cumple las raciones de la AESAN, con los huevos contados en todas las comidas. | Menú semanal con recetas, lista de la compra con cantidades, alergias e intolerancias, ajustar el menú a lo que tengo, ¿qué cocino hoy?, calendario de temporada |
 | [Datos](https://serbenda.github.io/despensa/datos.html) | Cómo comemos en España: exceso de peso en adultos y niños, hábitos, renta y cesta de la compra. | Nueve gráficos con tabla y fuente |
 | [Herramientas](https://serbenda.github.io/despensa/herramientas.html) | Todas las calculadoras en una sola página. | Todas |
 
@@ -64,6 +64,9 @@ Todas calculan al momento, en tu propio dispositivo.
 | ¿Cuánto sudas? | Tasa de sudoración, porcentaje de peso perdido, lo que hay que beber por hora para no pasar del 2 % y cuánto reponer (1,25 a 1,5 l por kilo perdido). | ACSM 2016 |
 | Explora los nutrientes | Fibra, calcio, hierro, omega-3 y sal: necesidades, a quién le falta, gráfico por ración frente a la necesidad diaria y consejos. | EFSA, OMS, BEDCA |
 | ¿Mito o realidad? | Doce afirmaciones con explicación y marcador. | AESAN, EFSA, OMS |
+| Recetas y cantidades | 59 platos con tiempo, ingredientes y pasos. Eliges cuántos sois y la receta y la lista de la compra se recalculan, redondeadas a lo que se compra de verdad. | AESAN 2022 |
+| Alergias y gustos | Sin gluten, lactosa, huevo, frutos secos, cacahuete, pescado, marisco, soja o sésamo: esos platos no salen nunca, tampoco en desayunos y meriendas, y las raciones se reparten entre lo que sí podéis comer. Con «No nos gusta» un plato deja de proponerse. | Reglamento (UE) 1169/2011 |
+| Cenas ligeras | Los guisos, los arroces y las pastas se quedan a mediodía; por la noche salen cremas, pescado a la plancha, revueltos y ensaladas. | AESAN 2022 |
 | Ajustar el menú a lo que tengo | Marcas en la lista de la compra lo que ya tienes (y, si quieres, otras cosas de casa) y el menú se rehace para usarlo primero, repartiendo ingredientes entre platos para que la lista sea más corta y sin saltarse las raciones semanales. Cada plato dice si lo tienes todo o qué falta, y «¿Qué cocino hoy?» propone los seis platos más completos. | AESAN 2022 |
 
 La altura y el peso que escribes en una herramienta pasan a las demás de la misma página, y la web los recuerda para que no tengas que repetirlos.
@@ -152,7 +155,7 @@ Los avisos usan verde, ámbar y rojo propios, siempre con texto e icono, nunca s
 
 ## Privacidad
 
-despensa no usa cookies, analítica ni formularios, y no pide registrarse. Las herramientas calculan en tu dispositivo: lo que escribes no se envía a ningún sitio. Solo se recuerdan en tu navegador el modo claro u oscuro, tu altura y peso, tu menú semanal y lo que tienes en casa.
+despensa no usa cookies, analítica ni formularios, y no pide registrarse. Las herramientas calculan en tu dispositivo: lo que escribes no se envía a ningún sitio. Solo se recuerdan en tu navegador el modo claro u oscuro, tu altura y peso, tu menú semanal, cuántos sois, vuestras alergias, los platos que no os gustan y lo que tienes en casa.
 
 ## Apoya despensa
 
