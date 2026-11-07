@@ -155,7 +155,7 @@ Los avisos usan verde, ámbar y rojo propios, siempre con texto e icono, nunca s
 
 ## Privacidad
 
-despensa no usa cookies, analítica ni formularios, y no pide registrarse. Las herramientas calculan en tu dispositivo: lo que escribes no se envía a ningún sitio. Solo se recuerdan en tu navegador el modo claro u oscuro, tu altura y peso, tu menú semanal, cuántos sois, vuestras alergias, los platos que no os gustan y lo que tienes en casa.
+despensa no usa cookies ni formularios, y no pide registrarse. Solo cuenta las visitas de forma anónima con [GoatCounter](https://www.goatcounter.com/), sin cookies ni datos personales. Las herramientas calculan en tu dispositivo: lo que escribes no se envía a ningún sitio. Solo se recuerdan en tu navegador el modo claro u oscuro, tu altura y peso, tu menú semanal, cuántos sois, vuestras alergias, los platos que no os gustan y lo que tienes en casa.
 
 ## Apoya despensa
 
